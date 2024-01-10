@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.testmall.Model.Commodity;
+import com.testmall.Model.Commodities;
 import com.testmall.Model.CommodityTag;
 import com.testmall.Service.CommodityService;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -22,19 +22,19 @@ public class ComController {
 
     @GetMapping("/getComAll")
     @ResponseBody
-    public List<Commodity> getComAll(){
+    public List<Commodities> getComAll(){
         return comService.queryAll();
     }
 
     @GetMapping("/getComById")
     @ResponseBody
-    public Commodity getComById(Long id){
+    public Commodities getComById(Long id){
         return comService.queryById(id);
     }
 
     @GetMapping("/getComByTag")
     @ResponseBody
-    public List<Commodity> getComByTag(String tag){
+    public List<Commodities> getComByTag(String tag){
         return comService.queryByTag(tag);
     }
 }

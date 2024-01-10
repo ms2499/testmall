@@ -1,6 +1,6 @@
 package com.testmall.Dao;
 
-import com.testmall.Model.Commodity;
+import com.testmall.Model.Commodities;
 import com.testmall.Model.Userinfo;
 import com.testmall.Tools.CharsetTool;
 import org.springframework.beans.factory.annotation.Autowired;

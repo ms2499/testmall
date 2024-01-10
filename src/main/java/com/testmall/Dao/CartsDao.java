@@ -1,7 +1,7 @@
 package com.testmall.Dao;
 
-import com.testmall.Model.Commodity;
-import com.testmall.Model.Commodity;
+import com.testmall.Model.Commodities;
+import com.testmall.Model.Commodities;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,13 +15,13 @@ public class CartsDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    public Commodity getCommodityByCartItemId(Long cartCommodityID) {
+    public Commodities getCommodityByCartItemId(Long cartCommodityID) {
         Objects.requireNonNull(cartCommodityID, "購物車商品ID不能為空!");
 
         String sql = "SELECT * FROM commodities WHERE CommodityID = ?";
         try {
             // 使用BeanPropertyRowMapper自动将结果集映射到Commodity类
-            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Commodity.class), cartCommodityID);
+            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Commodities.class), cartCommodityID);
         } catch (Exception e) {
             // 根据需要处理异常（例如，如果找不到给定cartCommodityID的商品）
             throw new RuntimeException("查詢購物車商品詳細訊息時出錯，商品ID：" + cartCommodityID, e);

@@ -1,6 +1,6 @@
 package com.testmall.Controller;
 
-import com.testmall.Model.Commodity;
+import com.testmall.Model.Commodities;
 import com.testmall.Model.Userinfo;
 import com.testmall.Service.UserinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
