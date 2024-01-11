@@ -15,10 +15,6 @@ import java.util.List;
 
 @Repository
 public class CommodityDao {
-    int zz;
-    int cc;
-    int bb;
-    int aa;
     @Autowired
     JdbcTemplate jt;
     CharsetTool cstool = new CharsetTool();
