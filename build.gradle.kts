@@ -19,6 +19,7 @@ dependencies {
 //	implementation(fileTree(mapOf("dir" to "lib", "include" to listOf("jdbcMx.jar"))))
 //	implementation("org.springframework.boot:spring-boot-starter-data-jdbc")
 //	implementation("com.google.code.gson:gson")
+	implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
 	implementation("org.springframework.boot:spring-boot-starter-jdbc")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	runtimeOnly("com.microsoft.sqlserver:mssql-jdbc")

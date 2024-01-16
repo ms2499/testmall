@@ -15,7 +15,7 @@ public class UserinfoDao {
     JdbcTemplate jt;
     CharsetTool cstool = new CharsetTool();
 
-    public Userinfo queryUserByAccount(String account){
+    public Userinfo queryByAccount(String account){
         String sql = "SELECT * FROM userinfo WHERE UserAccount = '" + cstool.utf82iso(account) + "';";
 
         try{

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class CharsetTool {
@@ -40,10 +41,8 @@ public class CharsetTool {
 
     public boolean isEncoding(String s, String encode){
         try {
-            if (s.equals(new String(s.getBytes(), encode))){
-                //System.out.println("true, String is " + encode);
+            if (s.equals(new String(s.getBytes(), encode)))
                 return true;
-            }
         }
         catch (Exception e){
             e.printStackTrace();

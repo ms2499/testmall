@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS dbo.carts;
 DROP TABLE IF EXISTS dbo.userinfo;
 DROP TABLE IF EXISTS dbo.commodities;
 DROP TABLE IF EXISTS dbo.commodity_tags;
+DROP TABLE IF EXISTS dbo.managerinfo;
 
 CREATE TABLE dbo.commodity_tags (						/*商品種類表*/
 	CommoditySubTag VARCHAR(20) NOT NULL PRIMARY KEY,	/*小類*/
@@ -22,9 +23,9 @@ CREATE TABLE dbo.commodities (					/*商品表*/
 	CommodityTag VARCHAR(20) NULL,				/*商品分類*/
 	CommodityImgPath VARCHAR(200) NULL,			/*圖片位址*/
 	CommodityDetail VARCHAR(500) NULL,			/*商品詳細資訊*/
-	CommoditySaleFlag BIT NULL,					/*是否銷售中*/
-	CommodityDiscount BIT NULL,					/*是否有折扣*/
-	CommodityDisRate BIT NULL,					/*幾折*/
+	CommoditySaleFlag BIT NULL DEFAULT 1,		/*是否銷售中*/
+	CommodityDiscount BIT NULL DEFAULT 0,		/*是否有折扣*/
+	CommodityDisRate NUMERIC(1) NULL DEFAULT 0,	/*幾折*/
 	FOREIGN KEY (CommodityTag) REFERENCES commodity_tags(CommoditySubTag)
 );
 
@@ -77,6 +78,16 @@ CREATE TABLE dbo.orderlists (						/*訂單商品資訊*/
 
 CREATE INDEX IX_orderlist_no ON orderlists(OrderNo);
 
+CREATE TABLE dbo.managerinfo (							/*使用者表*/
+	ManAccount VARCHAR(30) NOT NULL PRIMARY KEY,		/*帳號*/
+	ManPassword VARCHAR(30) NULL,						/*密碼*/
+	ManName VARCHAR(20) NULL,							/*姓名*/
+	ManPhone VARCHAR(20) NULL,							/*電話*/
+	ManEmail VARCHAR(50) NULL,							/*email*/
+	ManAddress VARCHAR(100) NULL,						/*通訊地址*/
+	ManMsg VARCHAR(200) NULL							/*訊息*/
+);
+
 INSERT INTO commodity_tags (CommoditySubTag, CommodityMainTag) 
 VALUES ('水果', '食物');
 
@@ -96,16 +107,16 @@ VALUES ('狗', '寵物');
 -- VALUES ('葡萄', 100, 100, '水果', 'images/grape.jpg', '葡萄 Detail...');
 
 INSERT INTO commodities (CommodityName, CommodityQty, CommodityPrice, CommodityTag, CommodityImgPath, CommodityDetail)
-VALUES ('博美1', 100, 100, '狗', 'images/博美1.jpg', '博美1 Detail...');
+VALUES ('博美1', 100, 100, '狗', 'static/images/博美1.jpg', '博美1 Detail...');
 
 INSERT INTO commodities (CommodityName, CommodityQty, CommodityPrice, CommodityTag, CommodityImgPath, CommodityDetail)
-VALUES ('博美2', 100, 100, '狗', 'images/博美2.jpg', '博美2 Detail...');
+VALUES ('博美2', 100, 100, '狗', 'static/images/博美2.jpg', '博美2 Detail...');
 
 INSERT INTO commodities (CommodityName, CommodityQty, CommodityPrice, CommodityTag, CommodityImgPath, CommodityDetail)
-VALUES ('博美3', 100, 100, '狗', 'images/博美3.jpeg', '博美3 Detail...');
+VALUES ('博美3', 100, 100, '狗', 'static/images/博美3.jpeg', '博美3 Detail...');
 
 INSERT INTO commodities (CommodityName, CommodityQty, CommodityPrice, CommodityTag, CommodityImgPath, CommodityDetail)
-VALUES ('博美4', 100, 100, '狗', 'images/博美1.jpg', '博美4 Detail...');
+VALUES ('博美4', 100, 100, '狗', 'static/images/博美1.jpg', '博美4 Detail...');
 
 INSERT INTO userinfo (UserAccount, UserPassword, UserName, UserPhone, UserEmail, UserAddress, UserMsg)
 VALUES ('user1', 'user1', '測試員', '01234567890', 'user1@mail', '台北', 'User message...');
@@ -121,3 +132,6 @@ VALUES (1, 1, 2, 200, 0);
 
 INSERT INTO orderlists (OrderNo, OrderCommodityID, OrderQty, OrderPrice, OrderReturn)
 VALUES (1, 2, 1, 10, 0);
+
+INSERT INTO managerinfo (ManAccount, ManPassword, ManName, ManPhone, ManEmail, ManAddress, ManMsg)
+VALUES ('sa', 'sa', '管理員', '09876543210', 'sa@syscom.com.tw', '台北市', '管理員備註');

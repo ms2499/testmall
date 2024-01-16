@@ -1,18 +1,33 @@
 package com.testmall.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.testmall.Tools.CharsetTool;
 
-public class Commodities {
+import java.io.Serializable;
+
+public class Commodities implements Serializable {
+    @JsonIgnore
     CharsetTool cstool = new CharsetTool();
+    @JsonProperty(value = "commodityID")
     private Long commodityID;
+    @JsonProperty(value = "commodityName")
     private String commodityName;
+    @JsonProperty(value = "commodityQty")
     private int commodityQty;
+    @JsonProperty(value = "commodityPrice")
     private Long commodityPrice;
+    @JsonProperty(value = "commodityTag")
     private String commodityTag;
+    @JsonProperty(value = "commodityImgPath")
     private String commodityImgPath;
+    @JsonProperty(value = "commodityDetail")
     private String commodityDetail;
+    @JsonProperty(value = "commoditySaleFlag")
     private byte commoditySaleFlag;
+    @JsonProperty(value = "commodityDiscount")
     private byte commodityDiscount;
+    @JsonProperty(value = "commodityDisRate")
     private byte commodityDisRate;
 
     public Long getCommodityID(){
@@ -55,7 +70,7 @@ public class Commodities {
     }
 
     public void setCommodityTag(String tag){
-        if (cstool.isEncoding(tag, "ISO-8859-1"))
+        if (tag != null && cstool.isEncoding(tag, "ISO-8859-1"))
             this.commodityTag = cstool.iso2utf8(tag);
         else
             this.commodityTag = tag;
@@ -66,7 +81,7 @@ public class Commodities {
     }
 
     public void setCommodityImgPath(String path) {
-        if (cstool.isEncoding(path, "ISO-8859-1"))
+        if (path != null && cstool.isEncoding(path, "ISO-8859-1"))
             this.commodityImgPath = cstool.iso2utf8(path);
         else
             this.commodityImgPath = path;
@@ -77,7 +92,7 @@ public class Commodities {
     }
 
     public void setCommodityDetail(String detail) {
-        if (cstool.isEncoding(detail, "ISO-8859-1"))
+        if (detail != null && cstool.isEncoding(detail, "ISO-8859-1"))
             this.commodityDetail = cstool.iso2utf8(detail);
         else
             this.commodityDetail = detail;
@@ -105,6 +120,19 @@ public class Commodities {
 
     public void setCommodityDisRate(byte disRate) {
         this.commodityDisRate = disRate;
+    }
+
+    public Commodities(){
+        commodityID = 0l;
+        commodityName = "";
+        commodityQty = 0;
+        commodityPrice = 0l;
+        commodityTag = "";
+        commodityImgPath = "";
+        commodityDetail = "";
+        commoditySaleFlag = 1;
+        commodityDiscount = 0;
+        commodityDisRate = 0;
     }
 
     public Commodities(Long id, String name, int qty, Long price, String tag, String img_path, String detail, byte slFlag, byte dcount, byte drate){

@@ -3,11 +3,13 @@ package com.testmall.Service;
 import com.testmall.Dao.CartsDao;
 import com.testmall.Model.Carts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 //導入了com.testmall.Model包中的CartItem類別，表示這個類別會使用到CartItem
 import java.util.ArrayList;
 import java.util.List;
 //導入了 Java 標準庫中的ArrayList和List類別，這兩個類別是用來處理動態陣列和列表的
 
+@Service
 public class ShoppingCart {
 //定義ShoppingCart類別，宣告了一個名為ShoppingCart的類別
     @Autowired

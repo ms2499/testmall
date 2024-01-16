@@ -18,6 +18,6 @@ public class UserController {
     @GetMapping("/getByAccount")
     @ResponseBody
     public Userinfo getByAccount(@RequestParam String account){
-        return userService.queryUserByAccount(account);
+        return userService.queryByAccount(account);
     }
 }

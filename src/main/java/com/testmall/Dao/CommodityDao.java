@@ -97,4 +97,40 @@ public class CommodityDao {
         }
         return null;
     }
+
+    public String insertItem(Commodities commodities){
+        try {
+            String sql = "INSERT INTO commodities (CommodityName, CommodityQty, CommodityPrice, CommodityTag, CommodityImgPath, " +
+                                                  "CommodityDetail, CommoditySaleFlag, CommodityDiscount, CommodityDisRate) " +
+                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            int rowsAffected = jt.update(sql, commodities.getCommodityName(), commodities.getCommodityQty(), commodities.getCommodityPrice(),
+                           commodities.getCommodityTag(), commodities.getCommodityImgPath(), commodities.getCommodityDetail(),
+                           commodities.getCommoditySaleFlag(), commodities.getCommodityDiscount(), commodities.getCommodityDisRate());
+            return "新增" + rowsAffected + "筆資料!";
+        }catch (Exception e){
+            e.printStackTrace();
+            return "新增失敗!";
+        }
+    }
+
+    public String deleteItem(List<Long> idList){
+        try {
+            String sql = "DELETE FROM commodities WHERE CommodityID in(";
+            for (int i = 0; i < idList.size(); i++){
+                sql = sql + idList.get(i);
+                if (i == (idList.size() - 1))
+                    sql += ");";
+                else
+                    sql += ",";
+            }
+
+            int rowsAffected = jt.update(sql);
+
+            return "刪除" + rowsAffected + "筆資料!";
+        }catch (Exception e){
+            e.printStackTrace();
+            return "刪除失敗";
+        }
+    }
 }

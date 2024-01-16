@@ -1,40 +1,46 @@
 package com.testmall.Controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import com.testmall.Model.Commodities;
-import com.testmall.Model.CommodityTag;
 import com.testmall.Service.CommodityService;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Objects;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
+@RequestMapping("/com")
 public class ComController {
     @Autowired
     CommodityService comService;
 
-    @GetMapping("/getComAll")
+    @GetMapping("/getAll")
     @ResponseBody
-    public List<Commodities> getComAll(){
+    public List<Commodities> getAll(){
         return comService.queryAll();
     }
 
-    @GetMapping("/getComById")
+    @GetMapping("/getById")
     @ResponseBody
-    public Commodities getComById(Long id){
+    public Commodities getById(Long id){
         return comService.queryById(id);
     }
 
-    @GetMapping("/getComByTag")
+    @GetMapping("/getByTag")
     @ResponseBody
-    public List<Commodities> getComByTag(String tag){
+    public List<Commodities> getByTag(String tag){
         return comService.queryByTag(tag);
+    }
+
+    @PostMapping("/insertItem")
+    @ResponseBody
+    public String insertItem(@RequestBody(required = false) Commodities commodities){
+        return comService.insertItem(commodities);
+    }
+
+    @PostMapping("/deleteItem")
+    @ResponseBody
+    public String deleteItem(@RequestBody(required = false) List<Long> idList){
+        return comService.deleteItem(idList);
     }
 }

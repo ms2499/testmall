@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>首頁</title>
@@ -10,8 +10,8 @@
     <!-- Jquery JavaScript 文件 -->
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
 
-    <script src='HTMLEvent.js'></script>
-    <link rel="stylesheet" type="text/css" href="HomePage.css">
+    <script src="/static/js/HTMLEvent.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/HomePage.css">
     <script>
         $(document).ready(function () {
             getAll();
@@ -22,7 +22,7 @@
 <body>
     <nav class="menu">
         <a href="HomePage.html">
-            <img src="images/首頁.png" style="width:25px;height:25px;top:50%;left:2%;">
+            <img src="../static/images/首頁.png" style="width:25px;height:25px;top:50%;left:2%;">
         </a>
         <a href="Login.html" style="top:25%;left:95%;">登入</a>
     </nav>

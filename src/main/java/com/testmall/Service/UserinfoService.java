@@ -10,7 +10,7 @@ public class UserinfoService {
     @Autowired
     UserinfoDao userDao;
 
-    public Userinfo queryUserByAccount(String account){
-        return userDao.queryUserByAccount(account);
+    public Userinfo queryByAccount(String account){
+        return userDao.queryByAccount(account);
     }
 }

@@ -1,18 +1,18 @@
 function getAll(){
-    var dataUrl = "http://172.16.82.2:9090/getComAll"
+//    var dataUrl = "http://172.16.82.2:9090/com/getAll"
+    var dataUrl = "http://localhost:9090/com/getAll"
 
     $('#com-list').empty();
     $.ajax({
         url: dataUrl,
         method: 'GET',
-        dataType: 'text',
+        dataType: 'json',
         data: '',
         async: true,
 
         success: res => {
-            var resList = JSON.parse(res)
-            console.log(resList)
-            $.each(resList, function(i, n){
+            console.log(res)
+            $.each(res, function(i, n){
                 $('#com-list').append('<div class="items">'+
                                            '<a href="CommodityDetail.html?id='+n.commodityID+'" style="display:block">'+
                                            '<img src='+n.commodityImgPath+'>'+
@@ -34,7 +34,8 @@ function getAll(){
 }
 
 function getById(){
-    var dataUrl = "http://localhost:8080/getById"
+//    var dataUrl = "http://172.16.82.2:9090/com/getById"
+    var dataUrl = "http://localhost:9090/com/getById"
     var getUrlString = location.href;
     var url = new URL(getUrlString);
     var id = url.searchParams.get('id');
@@ -62,7 +63,8 @@ function getById(){
 }
 
 function getByTag(obj){
-    var dataUrl = "http://172.16.82.2:9090/getComByTag"
+//    var dataUrl = "http://172.16.82.2:9090/com/getByTag"
+    var dataUrl = "http://localhost:9090/com/getByTag"
     var tag = $(obj).text();
     console.log(tag)
     var userdata = { tag : tag }

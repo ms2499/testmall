@@ -23,4 +23,12 @@ public class CommodityService {
     public List<Commodities> queryByTag(String tag){
         return comDao.queryByTag(tag);
     }
+
+    public String insertItem(Commodities commodities){
+        return comDao.insertItem(commodities);
+    }
+
+    public String deleteItem(List<Long> idList){
+        return comDao.deleteItem(idList);
+    }
 }

@@ -6,25 +6,36 @@ server:
       charset: UTF-8
       enabled: true
       force: true
+    register-default-servlet: true
   port: 9090
 
 spring:
   datasource:
-    driver-class-name: com.tandem.sqlmx.SQLMXDriver
-    url: "jdbc:sqlmx:"
-    hikari:
-      catalog: mallcat
-      schema: mallsch
+#    driver-class-name: com.tandem.sqlmx.SQLMXDriver
+#    url: "jdbc:sqlmx:"
+#    hikari:
+#      catalog: mallcat
+#      schema: mallsch
+    url: jdbc:sqlserver://localhost;databaseName=testmall;encrypt=true;trustServerCertificate=true
+    username: boss
+    password: boss
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    encoding: UTF-8
+    mode: HTML5
+    cache: false
+  mvc:
+    static-path-pattern: /static/**
+#    converters:
+#      preferred-json-mapper: gson
+  resources:
+    static-locations: classpath:/static/
 
 # 自訂參數
 custom:
-  osType: OSS
-#    url= jdbc:sqlserver://localhost;databaseName=testmall;encrypt=true;trustServerCertificate=true
-#    username: boss
-#    password: boss
-#  mvc:
-#    converters:
-#      preferred-json-mapper: gson
+#  osType: OSS
+  osType: WIN
 
 #spring.http.encoding.charset=UTF-8
 #spring.http.encoding.force=true
