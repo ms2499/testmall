@@ -44,8 +44,8 @@ public class CommodityDao {
         }
         catch (Exception e){
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public Commodities queryById(Long id){
@@ -65,8 +65,8 @@ public class CommodityDao {
         }
         catch (Exception e){
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public List<Commodities> queryByTag(String tag){
@@ -94,8 +94,8 @@ public class CommodityDao {
         }
         catch (Exception e){
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public String insertItem(Commodities commodities){
@@ -104,13 +104,44 @@ public class CommodityDao {
                                                   "CommodityDetail, CommoditySaleFlag, CommodityDiscount, CommodityDisRate) " +
                          "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            int rowsAffected = jt.update(sql, commodities.getCommodityName(), commodities.getCommodityQty(), commodities.getCommodityPrice(),
-                           commodities.getCommodityTag(), commodities.getCommodityImgPath(), commodities.getCommodityDetail(),
-                           commodities.getCommoditySaleFlag(), commodities.getCommodityDiscount(), commodities.getCommodityDisRate());
+            int rowsAffected = jt.update(sql,
+                    cstool.utf82iso(commodities.getCommodityName()),
+                    commodities.getCommodityQty(),
+                    commodities.getCommodityPrice(),
+                    cstool.utf82iso(commodities.getCommodityTag()),
+                    cstool.utf82iso(commodities.getCommodityImgPath()),
+                    cstool.utf82iso(commodities.getCommodityDetail()),
+                    commodities.getCommoditySaleFlag(),
+                    commodities.getCommodityDiscount(),
+                    commodities.getCommodityDisRate());
             return "新增" + rowsAffected + "筆資料!";
         }catch (Exception e){
             e.printStackTrace();
-            return "新增失敗!";
+            return "資料庫新增失敗!";
+        }
+    }
+
+    public String updateItem(Commodities commodities){
+        try {
+            String sql = "UPDATE commodities SET CommodityName=?, CommodityQty=?, CommodityPrice=?, CommodityTag=?, "+
+                         "CommodityImgPath=?, CommodityDetail=?, CommoditySaleFlag=?, CommodityDiscount=?, CommodityDisRate=? "+
+                         "WHERE CommodityID = ?;";
+
+            int rowsAffected = jt.update(sql,
+                    cstool.utf82iso(commodities.getCommodityName()),
+                    commodities.getCommodityQty(),
+                    commodities.getCommodityPrice(),
+                    cstool.utf82iso(commodities.getCommodityTag()),
+                    cstool.utf82iso(commodities.getCommodityImgPath()),
+                    cstool.utf82iso(commodities.getCommodityDetail()),
+                    commodities.getCommoditySaleFlag(),
+                    commodities.getCommodityDiscount(),
+                    commodities.getCommodityDisRate(),
+                    commodities.getCommodityID());
+            return "更新" + rowsAffected + "筆資料!";
+        }catch (Exception e){
+            e.printStackTrace();
+            return "資料庫更新失敗!";
         }
     }
 
@@ -130,7 +161,7 @@ public class CommodityDao {
             return "刪除" + rowsAffected + "筆資料!";
         }catch (Exception e){
             e.printStackTrace();
-            return "刪除失敗";
+            return "資料庫刪除失敗";
         }
     }
 }

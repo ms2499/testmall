@@ -62,8 +62,63 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">更新商品</h5>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="update-name" class="col-form-label">商品名稱:</label>
+                            <input type="text" class="form-control" id="update-name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="update-qty" class="col-form-label">庫存數量:</label>
+                            <input type="text" class="form-control" id="update-qty">
+                        </div>
+                        <div class="mb-3">
+                            <label for="update-price" class="col-form-label">價格:</label>
+                            <input type="text" class="form-control" id="update-price">
+                        </div>
+                        <div class="mb-3">
+                            <label for="update-tag" class="col-form-label">商品分類:</label>
+                            <input type="text" class="form-control" id="update-tag">
+                        </div>
+                        <div class="mb-3">
+                            <label for="update-imgPath" class="col-form-label">圖片位址:</label>
+                            <input type="text" class="form-control" id="update-imgPath">
+                        </div>
+                        <div class="mb-3">
+                            <label for="update-detail" class="col-form-label">詳細資訊:</label>
+                            <input type="text" class="form-control" id="update-detail">
+                        </div>                        
+                        <div class="mb-3">
+                            <label for="update-sale" class="col-form-label">銷售中:</label>
+                            <input type="number" class="form-control" id="update-sale">
+                        </div>
+                        <div class="mb-3">
+                            <label for="update-discount" class="col-form-label">折扣:</label>
+                            <input type="number" class="form-control" id="update-discount">
+                        </div>
+                        <div class="mb-3">
+                            <label for="update-rate" class="col-form-label">幾折:</label>
+                            <input type="number" class="form-control" id="update-rate">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
+                    <button type="button" class="btn btn-primary" id="update-data" onclick="updateItem()">送出</button>
+                </div>
+            </div>
+        </div>
     </div>    
 
+    <script src="../static/js/globalparam.js"></script>
     <script src="../static/js/CommodityManager.js"></script>
     <link rel="stylesheet" type="text/css" href="../static/css/CommodityManager.css">
     <link rel="stylesheet" type="text/css" href="../static/css/common.css">    
@@ -80,8 +135,8 @@
         <p class="border border-dark">商品管理系統</p>
         <div id="work-options">
             <button type="button" class="btn btn-outline-dark" onclick="getAllCom()">查詢商品</button>
-            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#insertModal" data-bs-whatever="@mdo">新增商品</button>
-            <button type="button" class="btn btn-outline-dark" onclick="updateItem()">更新商品</button>
+            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#insertModal">新增商品</button>
+            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#updateModal">更新商品</button>
             <button type="button" class="btn btn-outline-dark" onclick="deleteItem()">刪除商品</button>
         </div>
 

@@ -28,6 +28,10 @@ public class CommodityService {
         return comDao.insertItem(commodities);
     }
 
+    public String updateItem(Commodities commodities){
+        return comDao.updateItem(commodities);
+    }
+
     public String deleteItem(List<Long> idList){
         return comDao.deleteItem(idList);
     }

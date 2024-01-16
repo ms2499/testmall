@@ -14,27 +14,27 @@ public class HelloController {
         return "index";
     }
 
-    @GetMapping("/CommodityManager")
+    @GetMapping("/CommodityManager.html")
     public String CommodityManager() {
         return "CommodityManager";
     }
 
-    @GetMapping("/CommodityTagManager")
+    @GetMapping("/CommodityTagManager.html")
     public String CommodityTagManager() {
         return "CommodityTagManager";
     }
 
-    @GetMapping("/UserinfoManager")
+    @GetMapping("/UserinfoManager.html")
     public String UserinfoManager() {
         return "UserinfoManager";
     }
 
-    @GetMapping("/CartManager")
+    @GetMapping("/CartManager.html")
     public String CartManager() {
         return "CartManager";
     }
 
-    @GetMapping("/OrderManager")
+    @GetMapping("/OrderManager.html")
     public String OrderManager() {
         return "OrderManager";
     }

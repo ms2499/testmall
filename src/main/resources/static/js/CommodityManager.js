@@ -1,5 +1,5 @@
 function getAllCom(){
-    var dataUrl = "http://localhost:9090/com/getAll"
+    let dataUrl = "http://" + ip + ":9090/com/getAll"
 
     $('.table').empty();
 
@@ -112,7 +112,7 @@ $('#insertModal').on('show.bs.modal', function (event) {
 })
 
 function insertItem(){
-    let dataUrl = "http://localhost:9090/com/insertItem"
+    let dataUrl = "http://" + ip + ":9090/com/insertItem"
     let jsonData = { 
                      commodityId : 1,
                      commodityName : $('#insert-name').val(),
@@ -138,6 +138,7 @@ function insertItem(){
 
         success: res => {
             window.alert(res)
+            $('#insertModal').modal('hide')
             getAllCom()
         },
 
@@ -148,8 +149,75 @@ function insertItem(){
     });
 }
 
+$('#updateModal').on('shown.bs.modal', function (event) {
+    let checkbox = $('.form-check-input:checkbox:checked')
+
+    if (checkbox.length != 1){
+        window.alert("請選擇一個商品!")
+        $('#updateModal').modal('hide')
+        return
+    }
+})
+
+$('#updateModal').on('show.bs.modal', function (event) {
+    let checkbox = $('.form-check-input:checkbox:checked')
+
+    if (checkbox.length == 1){
+        let childList = $(checkbox).parents(".form-check").parent().parent().children("td")
+        let formList = $('#update-name').parents("form").children()
+
+        for (let i = 0; i < formList.length; i++){
+            $(formList).eq(i).children("input").val($(childList).eq(i + 1).text())
+        }
+    }
+})
+
+$('#updateModal').on('hide.bs.modal', function (event) {
+    let formList = $('#update-name').parents("form").children()
+
+    for (let i = 0; i < formList.length; i++){
+        $(formList).eq(i).children("input").val(null)
+    }
+})
+
+function updateItem(){
+    let dataUrl = "http://" + ip + ":9090/com/updateItem"
+    let jsonData = { 
+                     commodityID : Number($('.form-check-input:checkbox:checked').parents(".form-check").parent().next().text()),
+                     commodityName : $('#update-name').val(),
+                     commodityQty : Number($('#update-qty').val()),
+                     commodityPrice : Number($('#update-price').val()),
+                     commodityTag : $('#update-tag').val(),
+                     commodityImgPath : $('#update-imgPath').val(),
+                     commodityDetail : $('#update-detail').val(),
+                     commoditySaleFlag : Number($('#update-sale').val()),
+                     commodityDiscount : Number($('#update-discount').val()),
+                     commodityDisRate : Number($('#update-rate').val())
+                   }
+
+    $.ajax({
+        url: dataUrl,
+        method: 'POST',
+        dataType: 'text',
+        data: JSON.stringify(jsonData),
+        async: true,      
+        contentType: 'application/json;charset=utf-8',
+        cache: false,
+
+        success: res => {
+            window.alert(res)
+            getAllCom()
+        },
+
+        error: err => {
+            console.log(err)
+            window.alert("更新失敗!")
+        },
+    });
+}
+
 function deleteItem(){
-    let dataUrl = "http://localhost:9090/com/deleteItem"
+    let dataUrl = "http://" + ip + ":9090/com/deleteItem"
     let idList = [];
     let checkboxes = $('.form-check-input:checkbox:checked')
 
@@ -161,8 +229,6 @@ function deleteItem(){
     checkboxes.each(function (i) {
         idList.push(Number($(this).parents(".form-check").parent().next().text()));
     });
-
-    console.log(idList)
 
     $.ajax({
         url: dataUrl,
@@ -180,7 +246,7 @@ function deleteItem(){
 
         error: err => {
             console.log(err)
-            window.alert("ajax刪除失敗!")
+            window.alert("刪除失敗!")
         },
     });
 }
