@@ -5,12 +5,10 @@ package com.testmall.Dao;
 
 import com.testmall.Model.Commodities;
 import com.testmall.Tools.CharsetTool;
-import com.testmall.properties.CustomProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.nio.charset.Charset;
 import java.util.List;
 
 @Repository
@@ -34,12 +32,6 @@ public class CommodityDao {
                     rs.getByte("CommoditySaleFlag"),
                     rs.getByte("CommodityDiscount"),
                     rs.getByte("CommodityDisRate")));
-            for (Commodities c:comList) {
-                cstool.pLog(c.getCommodityName()+" ");
-                cstool.pLog(c.getCommodityTag()+" ");
-                cstool.pLog(c.getCommodityImgPath()+" ");
-                cstool.pLogln(c.getCommodityDetail());
-            }
             return comList;
         }
         catch (Exception e){
@@ -84,12 +76,6 @@ public class CommodityDao {
                             rs.getByte("CommoditySaleFlag"),
                             rs.getByte("CommodityDiscount"),
                             rs.getByte("CommodityDisRate")));
-            for (Commodities c:comList) {
-                cstool.pLog(c.getCommodityName()+" ");
-                cstool.pLog(c.getCommodityTag()+" ");
-                cstool.pLog(c.getCommodityImgPath()+" ");
-                cstool.pLogln(c.getCommodityDetail());
-            }
             return comList;
         }
         catch (Exception e){
@@ -148,15 +134,16 @@ public class CommodityDao {
     public String deleteItem(List<Long> idList){
         try {
             String sql = "DELETE FROM commodities WHERE CommodityID in(";
+            StringBuilder str = new StringBuilder(sql);
             for (int i = 0; i < idList.size(); i++){
-                sql = sql + idList.get(i);
+                str.append(idList.get(i));
                 if (i == (idList.size() - 1))
-                    sql += ");";
+                    str.append(");");
                 else
-                    sql += ",";
+                    str.append(",");
             }
 
-            int rowsAffected = jt.update(sql);
+            int rowsAffected = jt.update(str.toString());
 
             return "刪除" + rowsAffected + "筆資料!";
         }catch (Exception e){

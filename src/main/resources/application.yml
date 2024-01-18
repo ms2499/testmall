@@ -7,6 +7,9 @@ server:
       enabled: true
       force: true
     register-default-servlet: true
+    ## Session 過期時間，默認單位為 s
+    session:
+      timeout: 600
   port: 9090
 
 spring:
@@ -31,6 +34,10 @@ spring:
 #      preferred-json-mapper: gson
   resources:
     static-locations: classpath:/static/
+  ## Session 存儲方式
+  session:
+    store-type: none
+
 
 # 自訂參數
 custom:

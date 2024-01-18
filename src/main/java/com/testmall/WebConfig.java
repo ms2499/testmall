@@ -1,34 +1,41 @@
 package com.testmall;
 
+import com.testmall.Interceptor.ManLoginInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.*;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
+    @Autowired
+    ManLoginInterceptor manLoginInterceptor;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-
+        //全部允許
         registry.addMapping("/**");
-//                .allowedOrigins("https://domain2.com")
-//                .allowedMethods("PUT", "DELETE")
-//                .allowedHeaders("header1", "header2", "header3")
-//                .exposedHeaders("header1", "header2")
-//                .allowCredentials(true).maxAge(3600);
+    }
 
-        // Add more mappings...
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        //在這個patterns裡面就是不用登入的
+        List<String> patterns = new ArrayList<>();
+        patterns.add("/manager/Login");
+
+        registry.addInterceptor(manLoginInterceptor)
+                .addPathPatterns("/manager/**")
+                .addPathPatterns("/back/**")
+                .excludePathPatterns(patterns);
     }
 
     @Override

@@ -1,15 +1,29 @@
 package com.testmall.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.testmall.Tools.CharsetTool;
 
-public class Userinfo {
+import java.io.Serializable;
+
+public class Userinfo implements Serializable {
+    @JsonIgnore
     CharsetTool cstool = new CharsetTool();
+    @JsonProperty(value = "userAccount")
     String userAccount;
+    @JsonProperty(value = "userPassword")
     String userPassword;
+    @JsonProperty(value = "userSalt")
+    String userSalt;
+    @JsonProperty(value = "userName")
     String userName;
+    @JsonProperty(value = "userPhone")
     String userPhone;
+    @JsonProperty(value = "userEmail")
     String userEmail;
+    @JsonProperty(value = "userAddress")
     String userAddress;
+    @JsonProperty(value = "userMsg")
     String userMsg;
 
     public String getUserAccount() {
@@ -32,6 +46,17 @@ public class Userinfo {
             this.userPassword = cstool.iso2utf8(userPassword);
         else
             this.userPassword = userPassword;
+    }
+
+    public String getUserSalt() {
+        return userSalt;
+    }
+
+    public void setUserSalt(String userSalt) {
+        if (cstool.isEncoding(userSalt, "ISO-8859-1"))
+            this.userSalt = cstool.iso2utf8(userSalt);
+        else
+            this.userSalt = userSalt;
     }
 
     public String getUserName() {
@@ -89,9 +114,21 @@ public class Userinfo {
             this.userMsg = userMsg;
     }
 
-    public Userinfo(String userAccount, String userPassword, String userName, String userPhone, String userEmail, String userAddress, String userMsg) {
+    public Userinfo() {
+        this.userAccount = "";
+        this.userPassword = "";
+        this.userSalt = "";
+        this.userName = "";
+        this.userPhone = "";
+        this.userEmail = "";
+        this.userAddress = "";
+        this.userMsg = "";
+    }
+
+    public Userinfo(String userAccount, String userPassword, String userSalt, String userName, String userPhone, String userEmail, String userAddress, String userMsg) {
         setUserAccount(userAccount);
         setUserPassword(userPassword);
+        setUserSalt(userSalt);
         setUserName(userName);
         setUserPhone(userPhone);
         setUserEmail(userEmail);

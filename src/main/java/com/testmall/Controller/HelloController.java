@@ -8,11 +8,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
+@RequestMapping("/back")
 public class HelloController {
-    @GetMapping("/")
-    public String index() {
-        return "index";
-    }
+//    @GetMapping("/")
+//    public String index() {
+//        return "index";
+//    }
 
     @GetMapping("/CommodityManager.html")
     public String CommodityManager() {
@@ -37,6 +38,11 @@ public class HelloController {
     @GetMapping("/OrderManager.html")
     public String OrderManager() {
         return "OrderManager";
+    }
+
+    @GetMapping("/Manager.html")
+    public String DbManager() {
+        return "Manager";
     }
 
     @GetMapping("/hello")

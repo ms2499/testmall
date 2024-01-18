@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS dbo.carts;
 DROP TABLE IF EXISTS dbo.userinfo;
 DROP TABLE IF EXISTS dbo.commodities;
 DROP TABLE IF EXISTS dbo.commodity_tags;
-DROP TABLE IF EXISTS dbo.managerinfo;
+DROP TABLE IF EXISTS dbo.manager;
 
 CREATE TABLE dbo.commodity_tags (						/*商品種類表*/
 	CommoditySubTag VARCHAR(20) NOT NULL PRIMARY KEY,	/*小類*/
@@ -36,7 +36,8 @@ CREATE INDEX IX_commodities_discount ON commodities(CommodityDiscount);
 
 CREATE TABLE dbo.userinfo (							/*使用者表*/
 	UserAccount VARCHAR(30) NOT NULL PRIMARY KEY,	/*帳號*/
-	UserPassword VARCHAR(30) NULL,					/*密碼*/
+	UserPassword CHAR(32) DEFAULT '' NOT NULL,		/*密碼*/
+	UserSalt CHAR(60) DEFAULT '' NOT NULL,			/*鹽值*/
 	UserName VARCHAR(20) NULL,						/*姓名*/
 	UserPhone VARCHAR(20) NULL,						/*電話*/
 	UserEmail VARCHAR(50) NULL,						/*email*/
@@ -78,15 +79,19 @@ CREATE TABLE dbo.orderlists (						/*訂單商品資訊*/
 
 CREATE INDEX IX_orderlist_no ON orderlists(OrderNo);
 
-CREATE TABLE dbo.managerinfo (							/*使用者表*/
-	ManAccount VARCHAR(30) NOT NULL PRIMARY KEY,		/*帳號*/
-	ManPassword VARCHAR(30) NULL,						/*密碼*/
-	ManName VARCHAR(20) NULL,							/*姓名*/
-	ManPhone VARCHAR(20) NULL,							/*電話*/
-	ManEmail VARCHAR(50) NULL,							/*email*/
-	ManAddress VARCHAR(100) NULL,						/*通訊地址*/
-	ManMsg VARCHAR(200) NULL							/*訊息*/
+CREATE TABLE dbo.manager (							/*後台管理者表*/
+	ManID BIGINT IDENTITY(1,1) NOT NULL PRIMARY KEY,   /*ID*/
+	ManAccount VARCHAR(30) NOT NULL UNIQUE,			/*帳號*/
+	ManPassword CHAR(32) DEFAULT '' NOT NULL,		/*密碼*/
+	ManSalt CHAR(60) DEFAULT '' NOT NULL,			/*鹽質*/
+	ManName VARCHAR(20) NULL,						/*姓名*/
+	ManPhone VARCHAR(20) NULL,						/*電話*/
+	ManEmail VARCHAR(50) NULL,						/*email*/
+	ManAddress VARCHAR(100) NULL,					/*通訊地址*/
+	ManMsg VARCHAR(200) NULL						/*備註*/
 );
+
+CREATE INDEX IX_manager_account ON manager(ManAccount);
 
 INSERT INTO commodity_tags (CommoditySubTag, CommodityMainTag) 
 VALUES ('水果', '食物');
@@ -133,5 +138,5 @@ VALUES (1, 1, 2, 200, 0);
 INSERT INTO orderlists (OrderNo, OrderCommodityID, OrderQty, OrderPrice, OrderReturn)
 VALUES (1, 2, 1, 10, 0);
 
-INSERT INTO managerinfo (ManAccount, ManPassword, ManName, ManPhone, ManEmail, ManAddress, ManMsg)
-VALUES ('sa', 'sa', '管理員', '09876543210', 'sa@syscom.com.tw', '台北市', '管理員備註');
+INSERT INTO manager (ManAccount, ManPassword, ManSalt, ManName, ManPhone, ManEmail, ManAddress, ManMsg)
+VALUES ('admin', 'fc0f0078f09b07fe5fd45428d6aaf12f', '9bf0684484d740a0b03eb84218d84b82', '管理員', '0912345678', 'admin@gmail.com', '台北市', 'cc');

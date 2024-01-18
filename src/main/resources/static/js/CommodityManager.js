@@ -1,5 +1,5 @@
-function getAllCom(){
-    let dataUrl = "http://" + ip + ":9090/com/getAll"
+function getAll(){
+    let dataUrl = remoteUrl + "/com/getAll"
 
     $('.table').empty();
 
@@ -111,10 +111,18 @@ $('#insertModal').on('show.bs.modal', function (event) {
     
 })
 
+$('#insertModal').on('hide.bs.modal', function (event) {
+    let formList = $('#insert-name').parents("form").children()
+
+    for (let i = 0; i < formList.length; i++){
+        $(formList).eq(i).children("input").val(null)
+    }
+})
+
 function insertItem(){
-    let dataUrl = "http://" + ip + ":9090/com/insertItem"
+    let dataUrl = remoteUrl + "/com/insertItem"
     let jsonData = { 
-                     commodityId : 1,
+                     commodityID : 0,
                      commodityName : $('#insert-name').val(),
                      commodityQty : Number($('#insert-qty').val()),
                      commodityPrice : Number($('#insert-price').val()),
@@ -139,7 +147,7 @@ function insertItem(){
         success: res => {
             window.alert(res)
             $('#insertModal').modal('hide')
-            getAllCom()
+            getAll()
         },
 
         error: err => {
@@ -181,7 +189,7 @@ $('#updateModal').on('hide.bs.modal', function (event) {
 })
 
 function updateItem(){
-    let dataUrl = "http://" + ip + ":9090/com/updateItem"
+    let dataUrl = remoteUrl + "/com/updateItem"
     let jsonData = { 
                      commodityID : Number($('.form-check-input:checkbox:checked').parents(".form-check").parent().next().text()),
                      commodityName : $('#update-name').val(),
@@ -206,7 +214,7 @@ function updateItem(){
 
         success: res => {
             window.alert(res)
-            getAllCom()
+            getAll()
         },
 
         error: err => {
@@ -217,7 +225,7 @@ function updateItem(){
 }
 
 function deleteItem(){
-    let dataUrl = "http://" + ip + ":9090/com/deleteItem"
+    let dataUrl = remoteUrl + "/com/deleteItem"
     let idList = [];
     let checkboxes = $('.form-check-input:checkbox:checked')
 
@@ -241,7 +249,7 @@ function deleteItem(){
 
         success: res => {
             window.alert(res)
-            getAllCom()
+            getAll()
         },
 
         error: err => {

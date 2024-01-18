@@ -2,13 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>商品管理系統</title>
+    <title>商品管理</title>
     <!-- Jquery JavaScript 文件 -->
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>    
+    <script src="../static/js/jquery.min.js"></script>    
     <!-- 新 Bootstrap5 核心 CSS 文件 -->
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
     <!-- 最新的 Bootstrap5 核心 JavaScript 文件 -->
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/5.1.1/js/bootstrap.bundle.min.js"></script>
+    <script src="../static/js/bootstrap.bundle.min.js"></script>
 
     <div class="modal fade" id="insertModal" tabindex="-1" aria-labelledby="insertModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -120,21 +120,16 @@
 
     <script src="../static/js/globalparam.js"></script>
     <script src="../static/js/CommodityManager.js"></script>
-    <link rel="stylesheet" type="text/css" href="../static/css/CommodityManager.css">
     <link rel="stylesheet" type="text/css" href="../static/css/common.css">    
 </head>
 <body>
     <div id="options">
-        <button type="button" class="btn btn-outline-primary" onclick='location.href=("CommodityManager.html")'>商品管理</button>
-        <button type="button" class="btn btn-outline-primary" onclick='location.href=("CommodityTagManager.html")'>商品種類管理</button>
-        <button type="button" class="btn btn-outline-primary" onclick='location.href=("UserinfoManager.html")'>使用者資料管理</button>
-        <button type="button" class="btn btn-outline-primary" onclick='location.href=("CartManager.html")'>購物車管理</button>
-        <button type="button" class="btn btn-outline-primary" onclick='location.href=("OrderManager.html")'>訂單管理</button>
+        <!--內容在/static/commonhtml/options.html-->
     </div>
     <div id="work-area">
         <p class="border border-dark">商品管理系統</p>
         <div id="work-options">
-            <button type="button" class="btn btn-outline-dark" onclick="getAllCom()">查詢商品</button>
+            <button type="button" class="btn btn-outline-dark" onclick="getAll()">查詢商品</button>
             <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#insertModal">新增商品</button>
             <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#updateModal">更新商品</button>
             <button type="button" class="btn btn-outline-dark" onclick="deleteItem()">刪除商品</button>
@@ -144,5 +139,6 @@
 
         </table>
     </div>
+    <script src='../static/js/common.js'></script>
 </body>
 </html>
