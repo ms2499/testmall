@@ -4,6 +4,7 @@ import com.testmall.Model.Commodities;
 import com.testmall.Model.Manager;
 import com.testmall.Tools.CharsetTool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -31,6 +32,9 @@ public class ManagerDao {
                             rs.getString("ManMsg")));
             return managers;
         }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
         catch (Exception e){
             e.printStackTrace();
             return null;
@@ -50,6 +54,9 @@ public class ManagerDao {
                     rs.getString("ManEmail"),
                     rs.getString("ManAddress"),
                     rs.getString("ManMsg")));
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
         }
         catch (Exception e){
             e.printStackTrace();
@@ -71,7 +78,11 @@ public class ManagerDao {
                     rs.getString("ManAddress"),
                     rs.getString("ManMsg")));
         }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
         catch (Exception e){
+            e.printStackTrace();
             return null;
         }
     }

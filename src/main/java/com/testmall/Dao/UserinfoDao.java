@@ -5,6 +5,7 @@ import com.testmall.Model.Manager;
 import com.testmall.Model.Userinfo;
 import com.testmall.Tools.CharsetTool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -31,6 +32,9 @@ public class UserinfoDao {
                             rs.getString("UserMsg")));
             return userinfo;
         }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
         catch (Exception e){
             e.printStackTrace();
             return null;
@@ -52,10 +56,13 @@ public class UserinfoDao {
                         rs.getString("UserMsg")));
             return user;
         }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
         catch (Exception e){
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public String createUser(Userinfo userinfo){
@@ -106,6 +113,7 @@ public class UserinfoDao {
     }
 
     public int deleteUser(String accounts){
+        /*要注意是不是被其他表的Foreign Key鎖住，可能要先清空其他表*/
         try {
             String sql = "DELETE FROM userinfo WHERE UserAccount = ?";
 

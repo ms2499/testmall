@@ -41,6 +41,12 @@ public class ManagerService {
     }
 
     public String updateManager(Manager manager){
+        if (!manager.getManPassword().equals(manDao.queryById(manager.getManID()).getManPassword())){
+            String salt = UUIDutil.uuid();
+            manager.setManSalt(salt);
+            String md5Password = MD5util.md5(manager.getManPassword(), salt);
+            manager.setManPassword(md5Password);
+        }
         return manDao.updateManager(manager);
     }
 

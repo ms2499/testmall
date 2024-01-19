@@ -26,17 +26,17 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**");
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        //在這個patterns裡面就是不用登入的
-        List<String> patterns = new ArrayList<>();
-        patterns.add("/manager/Login");
-
-        registry.addInterceptor(manLoginInterceptor)
-                .addPathPatterns("/manager/**")
-                .addPathPatterns("/back/**")
-                .excludePathPatterns(patterns);
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        //在這個patterns裡面就是不用登入的
+//        List<String> patterns = new ArrayList<>();
+//        patterns.add("/manager/Login");
+//
+//        registry.addInterceptor(manLoginInterceptor)
+//                .addPathPatterns("/manager/**")
+//                .addPathPatterns("/back/**")
+//                .excludePathPatterns(patterns);
+//    }
 
     @Override
     public void extendMessageConverters(List<HttpMessageConverter<?>> converters){

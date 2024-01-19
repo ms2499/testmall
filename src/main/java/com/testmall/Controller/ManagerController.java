@@ -32,7 +32,7 @@ public class ManagerController {
 
     @GetMapping("/getByAccount")
     @ResponseBody
-    public Manager getByTag(String account){
+    public Manager getByAccount(String account){
         return manService.queryByAccount(account);
     }
 

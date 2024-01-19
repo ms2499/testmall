@@ -3,6 +3,8 @@ package com.testmall.Service;
 import com.testmall.Dao.UserinfoDao;
 import com.testmall.Model.Manager;
 import com.testmall.Model.Userinfo;
+import com.testmall.Tools.MD5util;
+import com.testmall.Tools.UUIDutil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +24,24 @@ public class UserinfoService {
     }
 
     public String createUser(Userinfo userinfo){
-        return userDao.createUser(userinfo);
+        if (userDao.queryByAccount(userinfo.getUserAccount())!=null)
+            return "此帳號已存在!";
+        else{
+            String salt = UUIDutil.uuid();
+            userinfo.setUserSalt(salt);
+            String md5Password = MD5util.md5(userinfo.getUserPassword(), salt);
+            userinfo.setUserPassword(md5Password);
+            return userDao.createUser(userinfo);
+        }
     }
 
     public String updateUser(Userinfo userinfo){
+        if (!userDao.queryByAccount(userinfo.getUserAccount()).getUserPassword().equals(userinfo.getUserPassword())){
+            String salt = UUIDutil.uuid();
+            userinfo.setUserSalt(salt);
+            String md5Password = MD5util.md5(userinfo.getUserPassword(), salt);
+            userinfo.setUserPassword(md5Password);
+        }
         return userDao.updateUser(userinfo);
     }
 
