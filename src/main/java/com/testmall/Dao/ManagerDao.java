@@ -42,7 +42,7 @@ public class ManagerDao {
     }
 
     public Manager queryById(Long id){
-        String sql = "SELECT * FROM manager WHERE ManID = " + id + ";";
+        String sql = "SELECT * FROM manager WHERE ManID = ?";
 
         try{
             return jt.queryForObject(sql, (rs, n) -> new Manager(rs.getLong("ManID"),
@@ -53,7 +53,8 @@ public class ManagerDao {
                     rs.getString("ManPhone"),
                     rs.getString("ManEmail"),
                     rs.getString("ManAddress"),
-                    rs.getString("ManMsg")));
+                    rs.getString("ManMsg")),
+                    id);
         }
         catch (EmptyResultDataAccessException e){
             return null;
@@ -65,7 +66,7 @@ public class ManagerDao {
     }
 
     public Manager queryByAccount(String account){
-        String sql = "SELECT * FROM manager WHERE ManAccount = '" + cstool.utf82iso(account) + "';";
+        String sql = "SELECT * FROM manager WHERE ManAccount = ?";
 
         try{
             return jt.queryForObject(sql, (rs, n) -> new Manager(rs.getLong("ManID"),
@@ -76,7 +77,8 @@ public class ManagerDao {
                     rs.getString("ManPhone"),
                     rs.getString("ManEmail"),
                     rs.getString("ManAddress"),
-                    rs.getString("ManMsg")));
+                    rs.getString("ManMsg")),
+                    cstool.utf82iso(account));
         }
         catch (EmptyResultDataAccessException e){
             return null;

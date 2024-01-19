@@ -42,7 +42,7 @@ public class UserinfoDao {
     }
 
     public Userinfo queryByAccount(String account){
-        String sql = "SELECT * FROM userinfo WHERE UserAccount = '" + cstool.utf82iso(account) + "';";
+        String sql = "SELECT * FROM userinfo WHERE UserAccount = ?";
 
         try{
             Userinfo user =
@@ -53,7 +53,8 @@ public class UserinfoDao {
                         rs.getString("UserPhone"),
                         rs.getString("UserEmail"),
                         rs.getString("UserAddress"),
-                        rs.getString("UserMsg")));
+                        rs.getString("UserMsg")),
+                        cstool.utf82iso(account));
             return user;
         }
         catch (EmptyResultDataAccessException e){

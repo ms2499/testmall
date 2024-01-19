@@ -41,7 +41,7 @@ public class CommodityDao {
     }
 
     public Commodities queryById(Long id){
-        String sql = "SELECT * FROM commodities WHERE CommodityID = " + id + ";";
+        String sql = "SELECT * FROM commodities WHERE CommodityID = ?";
 
         try{
             return jt.queryForObject(sql, (rs, n) -> new Commodities(rs.getLong("CommodityID"),
@@ -53,7 +53,8 @@ public class CommodityDao {
                     rs.getString("CommodityDetail"),
                     rs.getByte("CommoditySaleFlag"),
                     rs.getByte("CommodityDiscount"),
-                    rs.getByte("CommodityDisRate")));
+                    rs.getByte("CommodityDisRate")),
+                    id);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -62,7 +63,8 @@ public class CommodityDao {
     }
 
     public List<Commodities> queryByTag(String tag){
-        String sql = "SELECT * FROM commodities WHERE CommodityTag = '" + cstool.utf82iso(tag) + "';";
+//        String sql = "SELECT * FROM commodities WHERE CommodityTag = '" + cstool.utf82iso(tag) + "';";
+        String sql = "SELECT * FROM commodities WHERE CommodityTag = ?";
 
         try{
             List<Commodities> comList =
@@ -75,7 +77,8 @@ public class CommodityDao {
                             rs.getString("CommodityDetail"),
                             rs.getByte("CommoditySaleFlag"),
                             rs.getByte("CommodityDiscount"),
-                            rs.getByte("CommodityDisRate")));
+                            rs.getByte("CommodityDisRate")),
+                            cstool.utf82iso(tag));
             return comList;
         }
         catch (Exception e){
