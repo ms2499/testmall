@@ -33,6 +33,13 @@
             }
         });
 
+        $(this).on('keyup', function(event){
+            event.preventDefault();
+            if (event.keyCode === 13) {
+                $('#loginBtn').click();
+            }
+        });        
+
         function login(){
             let dataUrl = remoteUrl + "/manager/Login"
             let jsonData = { 

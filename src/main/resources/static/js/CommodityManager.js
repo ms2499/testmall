@@ -205,7 +205,7 @@ function updateItem(){
 
     $.ajax({
         url: dataUrl,
-        method: 'POST',
+        method: 'PATCH',
         dataType: 'text',
         data: JSON.stringify(jsonData),
         async: true,      
@@ -240,7 +240,7 @@ function deleteItem(){
 
     $.ajax({
         url: dataUrl,
-        method: 'POST',
+        method: 'DELETE',
         dataType: 'text',
         data: JSON.stringify(idList),
         async: true,      

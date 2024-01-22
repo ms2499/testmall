@@ -1,6 +1,14 @@
 package com.testmall.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.testmall.Tools.CharsetTool;
+
 public class Carts {
+    // 2024-01-22新增,用來處理網頁與OSS系統的編碼問題
+    // OSS編碼為ISO-8859-1,網頁編碼UTF-8,從資料庫讀出資料要放入物件的屬性時要轉為UTF-8
+    // 相反在Dao那邊要寫入資料庫時要轉為ISO-8859-1
+    @JsonIgnore
+    CharsetTool cstool = new CharsetTool();
     private int cartSeq;    //購物車流水號
     private String cartAccount;    //使用者帳號
 
@@ -30,16 +38,34 @@ public class Carts {
     //修改-End
     private int cartQty;    //購買數量
 
-    public Carts(int cartSeq, String cartAccount, Long cartCommodityID, int cartQty) {
+    public Carts(int cartSeq, String cartAccount, long commodityID, int cartQty) {
+        // 2024-01-22修改-B 此處應判斷傳入的參數,this.cartSeq指的是物件底下的屬性
+        // this可參考https://java.4-x.tw/java-08/java-08-4
         if (cartQty <= 0){
+      //if (this.cartQty <= 0){
             throw new IllegalArgumentException("這裡沒東西 cartQty must be greater than 0");
         }
         // 基本參數合法性檢查
+        // 同上,要把傳入參數塞給物件屬性
+        //this.cartSeq = this.cartSeq;
+        //this.cartAccount = this.cartAccount;
+        //this.cartCommodityID = cartCommodityID;
+        //this.cartQty = this.cartQty;
         this.cartSeq = cartSeq;
-        this.cartAccount = cartAccount;
-        this.cartCommodityID = cartCommodityID;
+        //cartAccount需做轉碼處理,所以不直接賦值
+        setCartAccount(cartAccount);
+        this.cartCommodityID = commodityID;
         this.cartQty = cartQty;
         // 確保已被正確初始化
+        // 2024-01-22修改-E
+    }
+
+    // 2024-01-22新增 要多一個無參數建構子,給屬性預設值,不然在接收前台資料轉為物件時會壞掉
+    public Carts(){
+        this.cartSeq = 0;
+        this.cartAccount = "";
+        this.cartCommodityID = 0L;
+        this.cartQty = 0;
     }
 
     // Getters and setters
@@ -54,7 +80,11 @@ public class Carts {
         return cartAccount;
     }
     public void setCartAccount(String cartAccount) {
-        this.cartAccount = cartAccount;
+        // 2024-01-22新增 字串類型資料需判斷編碼
+        if (cstool.isEncoding(cartAccount, "ISO-8859-1"))
+            this.cartAccount= cstool.iso2utf8(cartAccount);
+        else
+            this.cartAccount = cartAccount;
     }
 
     public Long getCartCommodityID() {

@@ -1,63 +1,80 @@
 package com.testmall.Dao;
 
 import com.testmall.Model.Commodities;
-import com.testmall.Model.Commodities;
+import com.testmall.Model.Carts;
+import com.testmall.Tools.CharsetTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import com.testmall.Model.Carts;
 
+import java.util.List;
 import java.util.Objects;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
 @Repository
 public class CartsDao {
-
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    public Commodities getCommodityByCartItemId(Long cartCommodityID) {
-        Objects.requireNonNull(cartCommodityID, "購物車商品ID不能為空!");
+    CharsetTool cstool = new CharsetTool();
 
-        String sql = "SELECT * FROM commodities WHERE CommodityID = ?";
+    public List<Carts> queryAll() {
+        String sql = "SELECT * FROM carts";
         try {
-            // 使用BeanPropertyRowMapper自动将结果集映射到Commodity类
-            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Commodities.class), cartCommodityID);
+            return jdbcTemplate.query(sql, (rs, rowNum) -> new Carts(
+                    rs.getInt("CartSeq"),
+                    rs.getString("CartAccount"),
+                    // 2024-01-22修改 對應資料庫Table name
+                 // rs.getLong("CommodityID"),
+                    rs.getLong("CartCommodityID"),
+                 // rs.getInt("cartQty")
+                    rs.getInt("CartQty")
+            ));
         } catch (Exception e) {
-            // 根据需要处理异常（例如，如果找不到给定cartCommodityID的商品）
-            throw new RuntimeException("查詢購物車商品詳細訊息時出錯，商品ID：" + cartCommodityID, e);
+            e.printStackTrace();
         }
+        return null;
     }
-    public void saveCartItem(Carts item) {
+
+    public void addCartItem(Carts item) {
         if (item == null || item.getCartQty() <= 0) {
             throw new IllegalArgumentException("Invalid cart item data");
         }
         //參數校驗
-        String sql = "INSERT INTO cart_items (cartAccount, cartCommodityID, cartQty) VALUES (?, ?, ?)";
-        int rowsAffected = jdbcTemplate.update(sql, item.getCartAccount(), item.getCartCommodityID(), item.getCartQty());
+        // 2024-01-22 資料庫Table名稱錯誤
+        String sql = "INSERT INTO carts (cartAccount, cartCommodityID, cartQty) VALUES (?, ?, ?)";
+        int rowsAffected = jdbcTemplate.update(sql,
+                // 2024-01-22 字串資料寫到資料庫要先轉碼
+              //item.getCartAccount(),
+                cstool.utf82iso(item.getCartAccount()),
+                item.getCartCommodityID(),
+                item.getCartQty());
         // 實現保存購物車項目到數據庫的邏輯，使用jdbcTemplate執行SQL語句
         if (rowsAffected <= 0) {
-            throw new RuntimeException("Failed to save cart item");
+            throw new RuntimeException("Failed to add cart item");
         }//錯誤處理
     }
 
-    public void removeCartItem(Long productId) {
-        Objects.requireNonNull(productId, "Product ID cannot be null");
+    // 2024-01-22 productId改cartSeq
+    public void removeCartItem(int cartSeq) {
+        // 2024-01-22 int值永不為null,所以下面這行無效
+        //Objects.requireNonNull(cartSeq, "Product ID cannot be null");
         //參數校驗
-        String sql = "DELETE FROM carts WHERE cartCommodityID = ?";
-        int rowsAffected = jdbcTemplate.update(sql, productId);
+        String sql = "DELETE FROM carts WHERE CartSeq = ?";
+        int rowsAffected = jdbcTemplate.update(sql, cartSeq);
         // 實現從數據庫中刪除購物車項目的邏輯
         if (rowsAffected <= 0){
             throw new RuntimeException("No cart item found for the given product ID");
         }//錯誤處理
     }
 
-    public void updateCartItemQuantity(Long productId, int quantity) {
-        if (productId == null || quantity <= 0){
+    // 2024-01-22 productId改cartSeq
+    public void updateCartItemQuantity(int cartSeq, int quantity) {
+        if (cartSeq == 0 || quantity <= 0){
             throw new IllegalArgumentException("Invalid product ID or quantity");
         }
         //參數校驗
-        String sql = "UPDATE carts SET cartQty = ? WHERE cartCommodityID = ?";
-        int rowsAffected = jdbcTemplate.update(sql, quantity, productId);
+        String sql = "UPDATE carts SET CartQty = ? WHERE CartSeq = ?";
+        int rowsAffected = jdbcTemplate.update(sql, quantity, cartSeq);
         // 實現更新購物車項目數量到數據庫的邏輯
         if (rowsAffected <= 0){
             throw new RuntimeException("No cart item found for the given product ID");

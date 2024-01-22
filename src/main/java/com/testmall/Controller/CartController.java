@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import com.testmall.Service.ShoppingCart;
 import com.testmall.Model.Carts;
 
+import java.util.List;
+
+
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
@@ -14,9 +17,20 @@ public class CartController {
     @Autowired
     private ShoppingCart shoppingCart;
 
+    // 2024-01-22修改-B 直接return List<Carts>物件會自動轉json格式
+    @GetMapping("/getCartAll")
+    @ResponseBody
+    public List<Carts> getCartAll(){
+//        Gson gson = new Gson();
+//        String jsonList = gson.toJson(shoppingCart.queryAll());
+//        return jsonList;
+        return shoppingCart.queryAll();
+    }
+    // 2024-01-22修改-E
+
     @PostMapping("/add")
-    public ResponseEntity<String> addToCart(@RequestBody Carts item) {
-        boolean added = shoppingCart.addItem(item);
+    public ResponseEntity<String> addCartItem(@RequestBody Carts item) {
+        boolean added = shoppingCart.addCartItem(item);
         if (added){
             return ResponseEntity.ok().build();
         } else {
@@ -25,8 +39,10 @@ public class CartController {
     }
 
     @DeleteMapping("/remove")
-    public ResponseEntity<String> removeCartItem(@RequestParam Long productId) {
-        boolean removed = shoppingCart.removeItem(productId);
+  //public ResponseEntity<String> removeCartItem(@RequestParam Long productId) {
+    public ResponseEntity<String> removeCartItem(@RequestParam int cartSeq) {
+        // 2024-01-22 這邊應該是要購物車流水號
+        boolean removed = shoppingCart.removeCartItem(cartSeq);
         if (removed){
             return ResponseEntity.ok().build();
         }else {
@@ -36,9 +52,11 @@ public class CartController {
 
     @PutMapping("/update")
     public ResponseEntity<String> updateCartItemQuantity(
-            @RequestParam Long productId,
+            // 2024-01-22 這邊應該是要傳入流水號參數,因為可能有很多人買同一商品,只有商品id不知道是誰的
+          //@RequestParam Long productId,
+            @RequestParam int cartSeq,
             @RequestParam int quantity) {
-        boolean updated = shoppingCart.updateQuantity(productId, quantity);
+        boolean updated = shoppingCart.updateCartItemQuantity(cartSeq, quantity);
         if (updated){
             return ResponseEntity.ok().build();
         }else {
@@ -54,5 +72,5 @@ public class CartController {
     public ResponseEntity<String> handleException(Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
     }
-    // 增加全域異常處理，處理未預期的異常情況
+    // 增加全域異常處理，處理未預期的異常情況(處理網頁異常)
 }

@@ -1,7 +1,5 @@
 package com.testmall.Dao;
 
-import com.testmall.Model.Commodities;
-import com.testmall.Model.Manager;
 import com.testmall.Model.Userinfo;
 import com.testmall.Tools.CharsetTool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +19,7 @@ public class UserinfoDao {
         String sql = "SELECT * FROM userinfo;";
 
         try{
-            List<Userinfo> userinfo =
-                    jt.query(sql, (rs, n) -> new Userinfo(rs.getString("UserAccount"),
+            return jt.query(sql, (rs, n) -> new Userinfo(rs.getString("UserAccount"),
                             rs.getString("UserPassword"),
                             rs.getString("UserSalt"),
                             rs.getString("UserName"),
@@ -30,13 +27,12 @@ public class UserinfoDao {
                             rs.getString("UserEmail"),
                             rs.getString("UserAddress"),
                             rs.getString("UserMsg")));
-            return userinfo;
         }
         catch (EmptyResultDataAccessException e){
             return null;
         }
         catch (Exception e){
-            e.printStackTrace();
+            cstool.pLogln(e.toString(), "UserinfoDao.queryAll");
             return null;
         }
     }
@@ -45,8 +41,7 @@ public class UserinfoDao {
         String sql = "SELECT * FROM userinfo WHERE UserAccount = ?";
 
         try{
-            Userinfo user =
-                jt.queryForObject(sql, (rs, n) -> new Userinfo(rs.getString("UserAccount"),
+            return jt.queryForObject(sql, (rs, n) -> new Userinfo(rs.getString("UserAccount"),
                         rs.getString("UserPassword"),
                         rs.getString("UserSalt"),
                         rs.getString("UserName"),
@@ -55,13 +50,12 @@ public class UserinfoDao {
                         rs.getString("UserAddress"),
                         rs.getString("UserMsg")),
                         cstool.utf82iso(account));
-            return user;
         }
-        catch (EmptyResultDataAccessException e){
-            return null;
-        }
+//        catch (EmptyResultDataAccessException e){
+//            return null;
+//        }
         catch (Exception e){
-            e.printStackTrace();
+            cstool.pLogln(e.toString(), "UserinfoDao.queryByAccount");
             return null;
         }
     }
@@ -83,8 +77,9 @@ public class UserinfoDao {
                     cstool.utf82iso(userinfo.getUserMsg()));
 
             return "新增" + rowsAffected + "筆資料!";
-        }catch (Exception e){
-            e.printStackTrace();
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "UserinfoDao.createUser");
             return "資料庫新增失敗!";
         }
     }
@@ -107,8 +102,9 @@ public class UserinfoDao {
                     cstool.utf82iso(userinfo.getUserAccount()));
 
             return "更新" + rowsAffected + "筆資料!";
-        }catch (Exception e){
-            e.printStackTrace();
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "UserinfoDao.updateUser");
             return "資料庫更新失敗!";
         }
     }
@@ -121,8 +117,9 @@ public class UserinfoDao {
             jt.update(sql, cstool.utf82iso(accounts));
 
             return 1;
-        }catch (Exception e){
-            e.printStackTrace();
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "UserinfoDao.deleteUser");
             return -1;
         }
     }

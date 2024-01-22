@@ -20,8 +20,7 @@ public class ManagerDao {
         String sql = "SELECT * FROM manager;";
 
         try{
-            List<Manager> managers =
-                    jt.query(sql, (rs, n) -> new Manager(rs.getLong("ManID"),
+            return jt.query(sql, (rs, n) -> new Manager(rs.getLong("ManID"),
                             rs.getString("ManAccount"),
                             rs.getString("ManPassword"),
                             rs.getString("ManSalt"),
@@ -30,13 +29,12 @@ public class ManagerDao {
                             rs.getString("ManEmail"),
                             rs.getString("ManAddress"),
                             rs.getString("ManMsg")));
-            return managers;
         }
         catch (EmptyResultDataAccessException e){
             return null;
         }
         catch (Exception e){
-            e.printStackTrace();
+            cstool.pLogln(e.toString(), "ManagerDao.queryAll");
             return null;
         }
     }
@@ -60,7 +58,7 @@ public class ManagerDao {
             return null;
         }
         catch (Exception e){
-            e.printStackTrace();
+            cstool.pLogln(e.toString(), "ManagerDao.queryById");
             return null;
         }
     }
@@ -84,7 +82,7 @@ public class ManagerDao {
             return null;
         }
         catch (Exception e){
-            e.printStackTrace();
+            cstool.pLogln(e.toString(), "ManagerDao.queryByAccount");
             return null;
         }
     }
@@ -106,8 +104,9 @@ public class ManagerDao {
                     cstool.utf82iso(manager.getManMsg()));
 
             return "新增" + rowsAffected + "筆資料!";
-        }catch (Exception e){
-            e.printStackTrace();
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "ManagerDao.createManager");
             return "資料庫新增失敗!";
         }
     }
@@ -129,8 +128,9 @@ public class ManagerDao {
                     cstool.utf82iso(manager.getManMsg()),
                     manager.getManID());
             return "更新" + rowsAffected + "筆資料!";
-        }catch (Exception e){
-            e.printStackTrace();
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "ManagerDao.updateManager");
             return "資料庫更新失敗!";
         }
     }
@@ -150,8 +150,9 @@ public class ManagerDao {
             int rowsAffected = jt.update(str.toString());
 
             return "刪除" + rowsAffected + "筆資料!";
-        }catch (Exception e){
-            e.printStackTrace();
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "ManagerDao.deleteManager");
             return "資料庫刪除失敗";
         }
     }

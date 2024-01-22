@@ -38,13 +38,13 @@ public class ComController {
         return comService.insertItem(commodities);
     }
 
-    @PostMapping("/updateItem")
+    @PatchMapping("/updateItem")
     @ResponseBody
     public String updateItem(@RequestBody(required = false) Commodities commodities){
         return comService.updateItem(commodities);
     }
 
-    @PostMapping("/deleteItem")
+    @DeleteMapping("/deleteItem")
     @ResponseBody
     public String deleteItem(@RequestBody(required = false) List<Long> idList){
         return comService.deleteItem(idList);

@@ -7,6 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CharsetTool {
     public String iso2utf8(String s){
@@ -19,7 +21,7 @@ public class CharsetTool {
                 return s;
         }
         catch (Exception e){
-            e.printStackTrace();
+            pLogln(e.toString(), e.getClass().getName());
         }
         return s;
     }
@@ -34,7 +36,7 @@ public class CharsetTool {
                 return s;
         }
         catch (Exception e){
-            e.printStackTrace();
+            pLogln(e.toString(), e.getClass().getName());
         }
         return s;
     }
@@ -45,22 +47,26 @@ public class CharsetTool {
                 return true;
         }
         catch (Exception e){
-            e.printStackTrace();
+            pLogln(e.toString(), e.getClass().getName());
         }
         return false;
     }
 
-    public void pLogln(String log){
+    public void pLogln(String log, String method){
+        Date now = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS  ");
         if (CustomProperty.osType.equals("OSS"))
-            System.out.println(utf82iso(log));
+            System.out.println(format.format(now) + "Method:" + method + " [" + utf82iso(log) + "]");
         else
-            System.out.println(log);
+            System.out.println(format.format(now) + "Method:" + method + " [" + log + "]");
     }
 
-    public void pLog(String log){
+    public void pLog(String log, String method){
+        Date now = new Date();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS  ");
         if (CustomProperty.osType.equals("OSS"))
-            System.out.print(utf82iso(log));
+            System.out.print(format.format(now) + "Method:" + method + " [" + utf82iso(log) + "]");
         else
-            System.out.print(log);
+            System.out.print(format.format(now) + "Method:" + method + " [" + log + "]");
     }
 }

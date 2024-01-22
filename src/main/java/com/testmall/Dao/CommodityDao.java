@@ -1,11 +1,11 @@
 package com.testmall.Dao;
 
-//SQLMX資料庫編碼是ISO-8859-1，所有String資料需先使用cstool.iso2utf8方法進行轉碼，傳送到前台才不會亂碼
-//前台傳到後台也要先從UTF8轉ISO-8859-1
+//SQLMX資料庫編碼是ISO-8859-1，所有String資料需先使用cstool.utf82iso方法進行轉碼，操作資料庫才不會出錯
 
 import com.testmall.Model.Commodities;
 import com.testmall.Tools.CharsetTool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -21,8 +21,7 @@ public class CommodityDao {
         String sql = "SELECT * FROM commodities;";
 
         try{
-            List<Commodities> comList =
-                jt.query(sql, (rs, n) -> new Commodities(rs.getLong("CommodityID"),
+            return jt.query(sql, (rs, n) -> new Commodities(rs.getLong("CommodityID"),
                     rs.getString("CommodityName"),
                     rs.getInt("CommodityQty"),
                     rs.getLong("CommodityPrice"),
@@ -32,10 +31,12 @@ public class CommodityDao {
                     rs.getByte("CommoditySaleFlag"),
                     rs.getByte("CommodityDiscount"),
                     rs.getByte("CommodityDisRate")));
-            return comList;
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
         }
         catch (Exception e){
-            e.printStackTrace();
+            cstool.pLogln(e.toString(), "CommodityDao.queryAll");
             return null;
         }
     }
@@ -56,8 +57,11 @@ public class CommodityDao {
                     rs.getByte("CommodityDisRate")),
                     id);
         }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
         catch (Exception e){
-            e.printStackTrace();
+            cstool.pLogln(e.toString(), "CommodityDao.queryById");
             return null;
         }
     }
@@ -67,8 +71,7 @@ public class CommodityDao {
         String sql = "SELECT * FROM commodities WHERE CommodityTag = ?";
 
         try{
-            List<Commodities> comList =
-                    jt.query(sql, (rs, n) -> new Commodities(rs.getLong("CommodityID"),
+            return jt.query(sql, (rs, n) -> new Commodities(rs.getLong("CommodityID"),
                             rs.getString("CommodityName"),
                             rs.getInt("CommodityQty"),
                             rs.getLong("CommodityPrice"),
@@ -79,10 +82,12 @@ public class CommodityDao {
                             rs.getByte("CommodityDiscount"),
                             rs.getByte("CommodityDisRate")),
                             cstool.utf82iso(tag));
-            return comList;
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
         }
         catch (Exception e){
-            e.printStackTrace();
+            cstool.pLogln(e.toString(), "CommodityDao.queryByTag");
             return null;
         }
     }
@@ -104,8 +109,9 @@ public class CommodityDao {
                     commodities.getCommodityDiscount(),
                     commodities.getCommodityDisRate());
             return "新增" + rowsAffected + "筆資料!";
-        }catch (Exception e){
-            e.printStackTrace();
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "CommodityDao.insertItem");
             return "資料庫新增失敗!";
         }
     }
@@ -128,8 +134,9 @@ public class CommodityDao {
                     commodities.getCommodityDisRate(),
                     commodities.getCommodityID());
             return "更新" + rowsAffected + "筆資料!";
-        }catch (Exception e){
-            e.printStackTrace();
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "CommodityDao.updateItem");
             return "資料庫更新失敗!";
         }
     }
@@ -149,8 +156,9 @@ public class CommodityDao {
             int rowsAffected = jt.update(str.toString());
 
             return "刪除" + rowsAffected + "筆資料!";
-        }catch (Exception e){
-            e.printStackTrace();
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "CommodityDao.deleteItem");
             return "資料庫刪除失敗";
         }
     }
