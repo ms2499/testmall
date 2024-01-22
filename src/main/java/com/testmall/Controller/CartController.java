@@ -17,18 +17,13 @@ public class CartController {
     @Autowired
     private ShoppingCart shoppingCart;
 
-    // 2024-01-22修改-B 直接return List<Carts>物件會自動轉json格式
-    @GetMapping("/getCartAll")
+    @GetMapping("/queryAll")
     @ResponseBody
-    public List<Carts> getCartAll(){
-//        Gson gson = new Gson();
-//        String jsonList = gson.toJson(shoppingCart.queryAll());
-//        return jsonList;
+    public List<Carts> queryAll(){
         return shoppingCart.queryAll();
     }
-    // 2024-01-22修改-E
 
-    @PostMapping("/add")
+    @PostMapping("/addCartItem")
     public ResponseEntity<String> addCartItem(@RequestBody Carts item) {
         boolean added = shoppingCart.addCartItem(item);
         if (added){
@@ -38,10 +33,8 @@ public class CartController {
         }
     }
 
-    @DeleteMapping("/remove")
-  //public ResponseEntity<String> removeCartItem(@RequestParam Long productId) {
+    @DeleteMapping("/removeCartItem")
     public ResponseEntity<String> removeCartItem(@RequestParam int cartSeq) {
-        // 2024-01-22 這邊應該是要購物車流水號
         boolean removed = shoppingCart.removeCartItem(cartSeq);
         if (removed){
             return ResponseEntity.ok().build();
@@ -50,10 +43,8 @@ public class CartController {
         }
     }
 
-    @PutMapping("/update")
+    @PutMapping("/updateCartItemQuantity")
     public ResponseEntity<String> updateCartItemQuantity(
-            // 2024-01-22 這邊應該是要傳入流水號參數,因為可能有很多人買同一商品,只有商品id不知道是誰的
-          //@RequestParam Long productId,
             @RequestParam int cartSeq,
             @RequestParam int quantity) {
         boolean updated = shoppingCart.updateCartItemQuantity(cartSeq, quantity);
@@ -64,13 +55,15 @@ public class CartController {
         }
     }
 
-    @GetMapping("/view")
+    @GetMapping("/viewCart")
     public ResponseEntity<ShoppingCart> viewCart() {
         return ResponseEntity.ok(shoppingCart);
     }
+    //將購物車對象包裝在ResponseEntity中，並將其作為HTTP 200 OK的響應返回給客戶端。
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal Server Error");
     }
+    //例外發生時會回傳一個HTTP 500 Internal Server Error的響應，通知客戶端發生了內部伺服器錯誤。
     // 增加全域異常處理，處理未預期的異常情況(處理網頁異常)
 }

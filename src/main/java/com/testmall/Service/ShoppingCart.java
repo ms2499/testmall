@@ -4,9 +4,8 @@ import com.testmall.Dao.CartsDao;
 import com.testmall.Model.Carts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-//導入了com.testmall.Model包中的CartItem類別，表示這個類別會使用到CartItem
 import java.util.List;
-//導入了 Java 標準庫中的ArrayList和List類別，這兩個類別是用來處理動態陣列和列表的
+//導入了 Java 標準庫中的List類別，是用來處理動態陣列和列表的
 
 // 2024-01-22新增 @Service
 @Service
@@ -17,7 +16,13 @@ public class ShoppingCart {
 
     //Getters and setters
     public List<Carts> queryAll(){
-        return cartsDao.queryAll();
+        try{
+            return cartsDao.queryAll();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public boolean addCartItem(Carts item) {
@@ -29,12 +34,11 @@ public class ShoppingCart {
         }
         catch (Exception e){
             e.printStackTrace();
-            return false;
         }
+        return false;
         // 返回添加商品的結果
     }
 
-    // 2024-01-22 productId改cartSeq
     public boolean removeCartItem(int cartSeq) {
         // 實現刪除商品的邏輯
         //同新增，call cartsDao的方法操作資料庫
@@ -48,7 +52,6 @@ public class ShoppingCart {
         // 返回刪除商品的結果
     }
 
-    // 2024-01-22 productId改cartSeq
     public boolean updateCartItemQuantity(int cartSeq, int quantity) {
         // 實現更新商品數量的邏輯，根據商品編號和數量更新購物車中相應的CartItem的數量
         //同新增，call cartsDao的方法操作資料庫
