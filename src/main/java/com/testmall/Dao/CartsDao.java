@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
-@Repository
+@Repository 1
 public class CartsDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
