@@ -1,6 +1,6 @@
 package com.testmall.Dao;
 
-import com.testmall.Model.CommodityTag;
+import com.testmall.Model.CommodityTags;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -12,11 +12,11 @@ public class ComTagsDao {
     @Autowired
     JdbcTemplate jt;
 
-    public List<CommodityTag> queryAllMain(){
+    public List<CommodityTags> queryAllMain(){
         String sql = "SELECT DISTINCT CommodityMainTag FROM commodity_tags;";
 
         try{
-            return jt.query(sql, (rs, n) -> new CommodityTag(rs.getString("CommoditySubTag"),
+            return jt.query(sql, (rs, n) -> new CommodityTags(rs.getString("CommoditySubTag"),
                     rs.getString("CommodityMainTag")));
         }
         catch (Exception e){

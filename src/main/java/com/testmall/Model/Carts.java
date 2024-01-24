@@ -1,37 +1,18 @@
 package com.testmall.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.testmall.Tools.CharsetTool;
 public class Carts {
     @JsonIgnore
     CharsetTool cstool = new CharsetTool();
+    @JsonProperty(value = "CartSeq")
     private int cartSeq;    //購物車流水號
+    @JsonProperty(value = "cartAccount")
     private String cartAccount;    //使用者帳號
-
-    //修改-Begin
-    private Long cartCommodityID;
-    //private List <Commodity> commodity;
-    //商品編號&商品名稱 連到commodity的CommodityID & commodityName
-
-    //這裡不用List<Commodity>，CartItem的屬性要直接照資料表定義的去設定
-    //CartSeq INT ,	                        /*購物車流水號*/
-    //CartAccount VARCHAR(30) ,				/*帳號*/
-    //CartCommodityID BIGINT ,				/*商品編號*/
-    //CartQty INT ,							/*購買數量*/
-
-    //一個CartItem會對應一筆資料，比如說現在有兩筆資料，從資料庫讀出來是:
-    //[1, user1, 1, 2]
-    //[2, user1, 2, 1]
-    //到時候查詢時透過JdbcTemplate把資料塞入CartItem
-    //[1, user1, 1, 2] -> [CartItem1.cartSeq, CartItem1.cartAccount, CartItem1.cartCommodityID, CartItem1.cartQty]
-    //[2, user1, 2, 1] -> [CartItem2.cartSeq, CartItem2.cartAccount, CartItem2.cartCommodityID, CartItem2.cartQty]
-    //如果定義的是List<Commodity>這邊就會有錯誤
-
-    //之後若需要Commodity的資料再用CartItem的屬性去查詢，例如
-    //select * from commodities where CommodityID = CartItem1.cartCommodityID;
-    //這句sql語法是去查commodities的資料，where後面是查詢條件
-    //然後一樣透過JdbcTemplate把資料塞入Commodity物件
-    //修改-End
+    @JsonProperty(value = "cartCommodityID")
+    private Long cartCommodityID;    //商品編號
+    @JsonProperty(value = "cartQty")
     private int cartQty;    //購買數量
 
     public Carts(int cartSeq, String cartAccount, long cartCommodityID, int cartQty) {
