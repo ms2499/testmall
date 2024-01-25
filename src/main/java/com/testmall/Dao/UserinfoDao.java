@@ -86,12 +86,11 @@ public class UserinfoDao {
 
     public String updateUser(Userinfo userinfo){
         try {
-            String sql = "UPDATE userinfo SET UserAccount=?, UserPassword=?, UserSalt=?, UserName=?, "+
+            String sql = "UPDATE userinfo SET UserPassword=?, UserSalt=?, UserName=?, "+
                     "UserPhone=?, UserEmail=?, UserAddress=?, UserMsg=? "+
                     "WHERE UserAccount = ?;";
 
             int rowsAffected = jt.update(sql,
-                    cstool.utf82iso(userinfo.getUserAccount()),
                     cstool.utf82iso(userinfo.getUserPassword()),
                     cstool.utf82iso(userinfo.getUserSalt()),
                     cstool.utf82iso(userinfo.getUserName()),

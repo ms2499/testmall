@@ -3,6 +3,7 @@ package com.testmall.Service;
 import com.testmall.Dao.UserinfoDao;
 import com.testmall.Model.Manager;
 import com.testmall.Model.Userinfo;
+import com.testmall.Tools.CharsetTool;
 import com.testmall.Tools.MD5util;
 import com.testmall.Tools.UUIDutil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import java.util.List;
 
 @Service
 public class UserinfoService {
+    CharsetTool cstool = new CharsetTool();
     @Autowired
     UserinfoDao userDao;
 
@@ -36,7 +38,12 @@ public class UserinfoService {
     }
 
     public String updateUser(Userinfo userinfo){
-        if (!userDao.queryByAccount(userinfo.getUserAccount()).getUserPassword().equals(userinfo.getUserPassword())){
+        Userinfo oldUser = userDao.queryByAccount(userinfo.getUserAccount());
+        if (oldUser == null){
+            cstool.pLogln("查無此帳號"+userinfo.getUserAccount(), "UserinfoService.updateUser");
+            return "查無此帳號!";
+        }
+        if (!oldUser.getUserPassword().equals(userinfo.getUserPassword())){
             String salt = UUIDutil.uuid();
             userinfo.setUserSalt(salt);
             String md5Password = MD5util.md5(userinfo.getUserPassword(), salt);

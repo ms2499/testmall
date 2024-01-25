@@ -159,6 +159,7 @@ function updateItem(){
 
         success: res => {
             window.alert(res)
+            $('#updateModal').modal('hide')
             getAll()
         },
 

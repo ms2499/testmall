@@ -1,5 +1,5 @@
 function getAll(){
-    let dataUrl = remoteUrl + "/user/getAll"
+    let dataUrl = remoteUrl + "/api/cart/getCartAll"
 
     $('.table').empty();
 
@@ -17,14 +17,10 @@ function getAll(){
                 '<thead>'+
                     '<tr>'+
                         '<th scope="col"></th>'+
+                        '<th scope="col">流水號</th>'+
                         '<th scope="col">帳號</th>'+
-                        '<th scope="col">密碼</th>'+
-                        '<th scope="col">鹽值</th>'+
-                        '<th scope="col">姓名</th>'+
-                        '<th scope="col">電話</th>'+
-                        '<th scope="col">信箱</th>'+
-                        '<th scope="col">通訊地址</th>'+
-                        '<th scope="col">訊息</th>'+
+                        '<th scope="col">商品編號</th>'+
+                        '<th scope="col">購買數量</th>'+
                     '</tr>'+
                 '</thead>'+
                 '<tbody id="tbody">'+
@@ -35,17 +31,13 @@ function getAll(){
                     '<tr>'+
                         '<th scope="row">'+
                             '<div class="form-check">'+
-                                '<input class="form-check-input" type="checkbox" value="" id="checkbox-'+n.userAccount+'">'+
+                                '<input class="form-check-input" type="checkbox" value="" id="checkbox-'+n.cartSeq+'">'+
                             '</div>'+
                         '</th>'+
-                        '<td>'+n.userAccount+'</td>'+
-                        '<td>'+n.userPassword+'</td>'+
-                        '<td>'+n.userSalt+'</td>'+
-                        '<td>'+n.userName+'</td>'+
-                        '<td>'+n.userPhone+'</td>'+
-                        '<td>'+n.userEmail+'</td>'+
-                        '<td>'+n.userAddress+'</td>'+
-                        '<td>'+n.userMsg+'</td>'+
+                        '<td>'+n.cartSeq+'</td>'+
+                        '<td>'+n.cartAccount+'</td>'+
+                        '<td>'+n.cartCommodityID+'</td>'+
+                        '<td>'+n.cartQty+'</td>'+
                     '</tr>');
             })
         },
@@ -65,16 +57,12 @@ $('#insertModal').on('hide.bs.modal', function (event) {
 })
 
 function insertItem(){
-    let dataUrl = remoteUrl + "/user/createUser"
+    let dataUrl = remoteUrl + "/api/cart/add"
     let jsonData = { 
-                     userAccount : $('#insert-account').val(),
-                     userPassword : $('#insert-password').val(),
-                     userSalt : "",
-                     userName : $('#insert-name').val(),
-                     userPhone : $('#insert-phone').val(),
-                     userEmail : $('#insert-email').val(),
-                     userAddress : $('#insert-address').val(),
-                     userMsg : $('#insert-note').val()
+                     cartSeq : 0,
+                     cartAccount : $('#insert-account').val(),
+                     cartCommodityID : Number($('#insert-id').val()),
+                     cartQty : Number($('#insert-qty').val())
                    }
     console.log(jsonData)
 
@@ -88,7 +76,6 @@ function insertItem(){
         cache: false,
 
         success: res => {
-            window.alert(res)
             $('#insertModal').modal('hide')
             getAll()
         },
@@ -104,7 +91,7 @@ $('#updateModal').on('shown.bs.modal', function (event) {
     let checkbox = $('.form-check-input:checkbox:checked')
 
     if (checkbox.length != 1){
-        window.alert("請選擇一個使用者帳號!")
+        window.alert("請選擇一個商品!")
         $('#updateModal').modal('hide')
         return
     }
@@ -115,10 +102,10 @@ $('#updateModal').on('show.bs.modal', function (event) {
 
     if (checkbox.length == 1){
         let childList = $(checkbox).parents(".form-check").parent().parent().children("td")
-        let formList = $('#update-name').parents("form").children()
+        let formList = $('#update-account').parents("form").children()
 
         for (let i = 0; i < formList.length; i++){
-            $(formList).eq(i).children("input").val($(childList).eq(i).text())
+            $(formList).eq(i).children("input").val($(childList).eq(i + 1).text())
         }
     }
 })
@@ -132,21 +119,18 @@ $('#updateModal').on('hide.bs.modal', function (event) {
 })
 
 function updateItem(){
-    let dataUrl = remoteUrl + "/user/updateUser"
+    let dataUrl = remoteUrl + "/api/cart/update"
     let jsonData = { 
-                     userAccount : $('#update-account').val(),
-                     userPassword : $('#update-password').val(),
-                     userSalt : $('#update-salt').val(),
-                     userName : $('#update-name').val(),
-                     userPhone : $('#update-phone').val(),
-                     userEmail : $('#update-email').val(),
-                     userAddress : $('#update-address').val(),
-                     userMsg : $('#update-note').val()
+                     cartSeq : Number($('.form-check-input:checkbox:checked').parents(".form-check").parent().next().text()),
+                     cartAccount : $('#update-account').val(),
+                     cartCommodityID : Number($('#update-id').val()),
+                     cartQty : Number($('#update-qty').val())
                    }
+
 
     $.ajax({
         url: dataUrl,
-        method: 'POST',
+        method: 'PUT',
         dataType: 'text',
         data: JSON.stringify(jsonData),
         async: true,      
@@ -154,7 +138,6 @@ function updateItem(){
         cache: false,
 
         success: res => {
-            window.alert(res)
             $('#updateModal').modal('hide')
             getAll()
         },
@@ -167,30 +150,29 @@ function updateItem(){
 }
 
 function deleteItem(){
-    let dataUrl = remoteUrl + "/user/deleteUser"
-    let accounts = [];
+    let dataUrl = remoteUrl + "/api/cart/remove"
+    let idList = [];
     let checkboxes = $('.form-check-input:checkbox:checked')
 
     if (checkboxes.length == 0){
-        window.alert("請先勾選要刪除的帳號!")
+        window.alert("請先勾選要刪除的商品!")
         return
     }
 
     checkboxes.each(function (i) {
-        accounts.push($(this).parents(".form-check").parent().next().text());
+        idList.push(Number($(this).parents(".form-check").parent().next().text()));
     });
 
     $.ajax({
         url: dataUrl,
-        method: 'POST',
+        method: 'DELETE',
         dataType: 'text',
-        data: JSON.stringify(accounts),
+        data: JSON.stringify(idList),
         async: true,      
         contentType: 'application/json;charset=utf-8',
         cache: false,
 
         success: res => {
-            window.alert(res)
             getAll()
         },
 

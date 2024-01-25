@@ -80,5 +80,22 @@ public class CartsDao {
             throw new RuntimeException("No cart item found for the given product ID");
         }//錯誤處理
     }
+
+    // 給後台管理用
+    public void updateCart(Carts carts){
+        if (carts.getCartSeq() == 0 || carts.getCartQty() <= 0){
+            throw new IllegalArgumentException("Invalid product ID or quantity");
+        }
+        String sql = "UPDATE carts SET CartAccount = ?, CartCommodityID = ?, CartQty = ? WHERE CartSeq = ?";
+
+        int rowsAffected = jdbcTemplate.update(sql,
+                cstool.utf82iso(carts.getCartAccount()),
+                carts.getCartCommodityID(),
+                carts.getCartQty(),
+                carts.getCartSeq());
+        if (rowsAffected <= 0){
+            throw new RuntimeException("更新失敗!");
+        }
+    }
     // 其他可能的實現
 }

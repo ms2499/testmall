@@ -35,11 +35,13 @@ public class ShoppingCart {
     }
 
     // 2024-01-22 productId改cartSeq
-    public boolean removeCartItem(int cartSeq) {
+    public boolean removeCartItem(List<Integer> cartSeq) {
         // 實現刪除商品的邏輯
         //同新增，call cartsDao的方法操作資料庫
         try {
-            cartsDao.removeCartItem(cartSeq);
+            for (int seq:cartSeq){
+                cartsDao.removeCartItem(seq);
+            }
             return true;
         }catch (Exception e) {
             e.printStackTrace();
@@ -60,6 +62,17 @@ public class ShoppingCart {
         }
         return false;
         // 返回更新商品數量的結果
+    }
+
+    // 給後台管理用
+    public boolean updateCart(Carts carts){
+        try {
+            cartsDao.updateCart(carts);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     /*public void setCartItemDao(CartsDao cartsDao) {

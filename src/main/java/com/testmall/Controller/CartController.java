@@ -40,7 +40,7 @@ public class CartController {
 
     @DeleteMapping("/remove")
   //public ResponseEntity<String> removeCartItem(@RequestParam Long productId) {
-    public ResponseEntity<String> removeCartItem(@RequestParam int cartSeq) {
+    public ResponseEntity<String> removeCartItem(@RequestBody List<Integer> cartSeq) {
         // 2024-01-22 這邊應該是要購物車流水號
         boolean removed = shoppingCart.removeCartItem(cartSeq);
         if (removed){
@@ -50,7 +50,7 @@ public class CartController {
         }
     }
 
-    @PutMapping("/update")
+    @PutMapping("/updateQty")
     public ResponseEntity<String> updateCartItemQuantity(
             // 2024-01-22 這邊應該是要傳入流水號參數,因為可能有很多人買同一商品,只有商品id不知道是誰的
           //@RequestParam Long productId,
@@ -61,6 +61,16 @@ public class CartController {
             return ResponseEntity.ok().build();
         }else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Item not found in the cart");
+        }
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateCart(@RequestBody Carts carts) {
+        boolean updated = shoppingCart.updateCart(carts);
+        if (updated){
+            return ResponseEntity.ok().build();
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("更新失敗!");
         }
     }
 

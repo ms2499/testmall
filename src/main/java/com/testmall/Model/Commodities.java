@@ -123,10 +123,10 @@ public class Commodities implements Serializable {
     }
 
     public Commodities(){
-        commodityID = 0l;
+        commodityID = 0L;
         commodityName = "";
         commodityQty = 0;
-        commodityPrice = 0l;
+        commodityPrice = 0L;
         commodityTag = "";
         commodityImgPath = "";
         commodityDetail = "";
