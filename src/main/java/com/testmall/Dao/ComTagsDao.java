@@ -13,10 +13,11 @@ public class ComTagsDao {
     JdbcTemplate jt;
 
     public List<CommodityTags> queryAllMain(){
-        String sql = "SELECT DISTINCT CommodityMainTag FROM commodity_tags;";
+        String sql = "SELECT DISTINCT CommoditySubTag, CommodityMainTag FROM commodity_tags;";
 
         try{
-            return jt.query(sql, (rs, n) -> new CommodityTags(rs.getString("CommoditySubTag"),
+            return jt.query(sql, (rs, n) -> new CommodityTags(
+                    rs.getString("CommoditySubTag"),
                     rs.getString("CommodityMainTag")));
         }
         catch (Exception e){
@@ -24,4 +25,5 @@ public class ComTagsDao {
         }
         return null;
     }
+
 }
