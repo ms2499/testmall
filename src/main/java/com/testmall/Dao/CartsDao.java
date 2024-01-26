@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.SQLException;
 import java.util.List;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 
@@ -16,20 +17,23 @@ public class CartsDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
     CharsetTool cstool = new CharsetTool();
-    public List<Carts> queryAll() {
+    /*2024-01-26修正*/
+    public List<Carts> queryAll() throws IllegalArgumentException {
         String sql = "SELECT * FROM carts";
-        try {
-            return jdbcTemplate.query(sql, (rs, rowNum) -> new Carts(
-                    rs.getInt("CartSeq"),
-                    rs.getString("CartAccount"),
-                    rs.getLong("CartCommodityID"),
-                    rs.getInt("CartQty")
-            ));
-        } catch (Exception e) {
-            e.printStackTrace();
+        List<Carts> result = jdbcTemplate.query(sql, (rs, rowNum) -> new Carts(
+                rs.getInt("CartSeq"),
+                rs.getString("CartAccount"),
+                rs.getLong("CartCommodityID"),
+                rs.getInt("CartQty")
+        ));
+
+        if (result.isEmpty()) {
+            throw new IllegalArgumentException("The cart is empty.");
         }
-        return null;
+
+        return result;
     }
+    /*2024-01-26原用try&catch,改為throw*/
 
     public void addCartItem(Carts item) {
         if (item == null || item.getCartQty() <= 0) {
