@@ -26,7 +26,6 @@ public class CartsDao {
                 rs.getLong("CartCommodityID"),
                 rs.getInt("CartQty")
         ));
-
         if (result.isEmpty()) {
             throw new IllegalArgumentException("The cart is empty.");
         }
@@ -34,6 +33,29 @@ public class CartsDao {
         return result;
     }
     /*2024-01-26原用try&catch,改為throw*/
+    /*
+    public List<Carts> qureAll() {
+        return cartsList;
+    }
+
+    // 查询 carts 信息并根据条件抛出异常的方法
+    public void queryCartsInfo(int cartSeq, String cartAccount, Long cartCommodityID, int cartQty) throws CartQueryException {
+        List<Carts> queriedCarts = qureAll();
+        for (Carts cart : queriedCarts) {
+            // 判断条件是否符合
+            if (cart.getCartSeq() == cartSeq && cart.getCartAccount().equals(cartAccount)
+                    && cart.getCartCommodityID() == cartCommodityID && cart.getCartQty() == cartQty) {
+                // 符合条件，返回查询结果
+                System.out.println("Cart found: " + cart);
+                return;
+            }
+        }
+        // 条件不符合，抛出异常
+        throw new CartQueryException("Cart not found with given criteria: CartSeq=" + cartSeq +
+                ", CartAccount=" + cartAccount + ", CartCommodityID=" + cartCommodityID + ", CartQty=" + cartQty);
+    }
+}
+*/
 
     public void addCartItem(Carts item) {
         if (item == null || item.getCartQty() <= 0) {
