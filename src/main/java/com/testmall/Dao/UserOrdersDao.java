@@ -34,15 +34,15 @@ public class UserOrdersDao {
                             rs.getString("OrderAccount"),
                             rs.getString("OrderDate"),
                             rs.getInt("OrderTotal")));
-            for (UserOrders c:orderList) {
-                cstool.pLogln(c.getOrderAccount());
-                cstool.pLogln(c.getOrderDate());
-            }
+//            for (UserOrders c:orderList) {
+//                cstool.pLogln(c.getOrderAccount());
+//                cstool.pLogln(c.getOrderDate());
+//            }
             return orderList;
         }catch (Exception e){
             e.printStackTrace();
+            throw new RuntimeException("查詢失敗: " + e.getMessage());
         }
-        return null;
     }
 
     public UserOrders queryOrdersByNo(int no){
@@ -56,8 +56,8 @@ public class UserOrdersDao {
                     rs.getInt("OrderTotal")));
         }catch (Exception e){
             e.printStackTrace();
+            throw new RuntimeException("查詢失敗: " + e.getMessage());
         }
-        return null;
     }
 
     public String insertOrder(Carts carts){
@@ -79,7 +79,7 @@ public class UserOrdersDao {
             return "" + no;
         }catch (Exception e){
             e.printStackTrace();
-            return "訂單資料庫新增失敗!";
+            throw new RuntimeException("新增失敗: " + e.getMessage());
         }
     }
 

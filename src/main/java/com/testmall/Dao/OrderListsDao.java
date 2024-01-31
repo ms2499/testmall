@@ -30,8 +30,8 @@ public class OrderListsDao {
             return orderList;
         }catch (Exception e){
             e.printStackTrace();
+            throw new RuntimeException("查詢失敗: " + e.getMessage());
         }
-        return null;
     }
 
     public OrderLists queryListsByNo(int no){
@@ -47,8 +47,8 @@ public class OrderListsDao {
                     rs.getInt("OrderReturn")));
         }catch (Exception e){
             e.printStackTrace();
+            throw new RuntimeException("查詢失敗: " + e.getMessage());
         }
-        return null;
     }
 
     public String insertList(OrderLists orderlists){
