@@ -3,7 +3,9 @@ package com.testmall.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.testmall.Tools.CharsetTool;
-import java.time.LocalDate;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class UserOrders {
@@ -39,13 +41,9 @@ public class UserOrders {
     }
 
     public void setOrderDate(String date){
-//        if (cstool.isEncoding(date, "ISO-8859-1"))
-//            this.orderDate = cstool.iso2utf8(date);
-//        else
-//            this.orderDate = date;
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss");
-        LocalDate d = LocalDate.parse(date, formatter);
+        Timestamp timestamp = Timestamp.valueOf(date);
+        LocalDateTime d = timestamp.toLocalDateTime();
         this.orderDate = formatter.format(d);
     }
 
