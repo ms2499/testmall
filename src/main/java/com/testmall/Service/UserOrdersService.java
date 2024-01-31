@@ -28,7 +28,6 @@ public class UserOrdersService {
 //    }
 
     public String insertOrder(Carts carts){
-        int aa;
         int no = Integer.parseInt(ordersDao.insertOrder(carts));
         if (no > 0){
             return olService.insertList(carts, no);
