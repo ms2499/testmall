@@ -6,14 +6,22 @@ import com.testmall.Tools.CharsetTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Repository
 public class ManagerDao {
     @Autowired
     JdbcTemplate jt;
+    @Autowired
+    NamedParameterJdbcTemplate njt;
     CharsetTool cstool = new CharsetTool();
 
     public List<Manager> queryAll(){
@@ -89,19 +97,40 @@ public class ManagerDao {
 
     public String createManager(Manager manager){
         try {
+//            String sql = "INSERT INTO manager (ManAccount, ManPassword, ManSalt, ManName, " +
+//                    "ManPhone, ManEmail, ManAddress, ManMsg) "+
+//                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
             String sql = "INSERT INTO manager (ManAccount, ManPassword, ManSalt, ManName, " +
                     "ManPhone, ManEmail, ManAddress, ManMsg) "+
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    "VALUES (:account, :password, :salt, :name, :phone, :email, :addr, :msg);";
 
-            int rowsAffected = jt.update(sql,
-                    cstool.utf82iso(manager.getManAccount()),
-                    cstool.utf82iso(manager.getManPassword()),
-                    cstool.utf82iso(manager.getManSalt()),
-                    cstool.utf82iso(manager.getManName()),
-                    cstool.utf82iso(manager.getManPhone()),
-                    cstool.utf82iso(manager.getManEmail()),
-                    cstool.utf82iso(manager.getManAddress()),
-                    cstool.utf82iso(manager.getManMsg()));
+            GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
+
+//            int rowsAffected = jt.update(sql,
+//                    cstool.utf82iso(manager.getManAccount()),
+//                    cstool.utf82iso(manager.getManPassword()),
+//                    cstool.utf82iso(manager.getManSalt()),
+//                    cstool.utf82iso(manager.getManName()),
+//                    cstool.utf82iso(manager.getManPhone()),
+//                    cstool.utf82iso(manager.getManEmail()),
+//                    cstool.utf82iso(manager.getManAddress()),
+//                    cstool.utf82iso(manager.getManMsg()));
+            Map<String, Object> params = new HashMap<>();
+            params.put("account", cstool.utf82iso(manager.getManAccount()));
+            params.put("password", cstool.utf82iso(manager.getManPassword()));
+            params.put("salt", cstool.utf82iso(manager.getManSalt()));
+            params.put("name", cstool.utf82iso(manager.getManName()));
+            params.put("phone", cstool.utf82iso(manager.getManPhone()));
+            params.put("email", cstool.utf82iso(manager.getManEmail()));
+            params.put("addr", cstool.utf82iso(manager.getManAddress()));
+            params.put("msg", cstool.utf82iso(manager.getManMsg()));
+
+            int rowsAffected = njt.update(sql, new MapSqlParameterSource(params), keyHolder);
+
+            long id = Objects.requireNonNull(keyHolder.getKey()).longValue();
+
+            cstool.pLogln("新帳號id = " + id, "ManagerDao.createManager");
 
             return "新增" + rowsAffected + "筆資料!";
         }
