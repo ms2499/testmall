@@ -5,19 +5,14 @@ import com.testmall.Tools.CharsetTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class UserinfoDao {
     @Autowired
     JdbcTemplate jt;
-    @Autowired
-    NamedParameterJdbcTemplate njt;
 
     CharsetTool cstool = new CharsetTool();
 
