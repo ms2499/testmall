@@ -35,8 +35,8 @@ public class UserOrdersDao {
                             rs.getString("OrderDate"),
                             rs.getInt("OrderTotal")));
             for (UserOrders c:orderList) {
-                cstool.pLogln(c.getOrderAccount());
-                cstool.pLogln(c.getOrderDate());
+                cstool.pLogln(c.getOrderAccount(), "UserOrdersDao.queryAllOrders");
+                cstool.pLogln(c.getOrderDate(), "UserOrdersDao.queryAllOrders");
             }
             return orderList;
         }catch (Exception e){

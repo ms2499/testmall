@@ -5,14 +5,20 @@ import com.testmall.Tools.CharsetTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class UserinfoDao {
     @Autowired
     JdbcTemplate jt;
+    @Autowired
+    NamedParameterJdbcTemplate njt;
+
     CharsetTool cstool = new CharsetTool();
 
     public List<Userinfo> queryAll(){
@@ -51,9 +57,9 @@ public class UserinfoDao {
                         rs.getString("UserMsg")),
                         cstool.utf82iso(account));
         }
-//        catch (EmptyResultDataAccessException e){
-//            return null;
-//        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
         catch (Exception e){
             cstool.pLogln(e.toString(), "UserinfoDao.queryByAccount");
             return null;
