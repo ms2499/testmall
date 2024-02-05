@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.testmall.Tools.CharsetTool;
 
-//↓定義類型
+//↓定義一個CommodityTags類別
 public class CommodityTags { /*商品種類表*/
     //↓前端的屬性都是Json,這裡讓轉碼工具不會被Json影響
     @JsonIgnore
@@ -14,14 +14,14 @@ public class CommodityTags { /*商品種類表*/
     private String commoditySubTag; /*小類*/
     @JsonProperty(value = "commodityMainTag")
     private String commodityMainTag; /*大類*/
-//↓還不知道是做啥的功能
+//↓定義此類別建構子
     public CommodityTags(String commoditySubTag,String commodityMainTag) {
-        //↓把傳入參數塞給物件屬性,but小類大類需做轉碼處理,所以不直接賦值
+        //↓原本這裡是要在建構子的{ }區塊中定義建構子要做些什麼事
+        // 把傳入參數塞給物件屬性,but小類大類需做轉碼處理,所以不直接賦值
         setCommoditySubTag(commoditySubTag);
         setCommodityMainTag(commodityMainTag);
-        //確保已被正確初始化
     }
-//↓無參數建構子：給屬性預設值
+//↓(無參數)建構子：給屬性預設值
     public CommodityTags(){
         this.commoditySubTag = "";
         this.commodityMainTag = "";
