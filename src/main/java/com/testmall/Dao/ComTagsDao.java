@@ -17,8 +17,8 @@ public class ComTagsDao {
 
     //查詢小類及大類(進DB call小類/大類,回傳data,確認影響行數不<=0)
     public List<CommodityTags> queryAll(){
-        String sql = "SELECT DISTINCT CommoditySubTag, CommodityMainTag FROM commodity_tags;";
-
+        String sql = "SELECT DISTINCT CommoditySubTag, CommodityMainTag FROM commodity_tags";
+        //DISTINCT是過濾，可拿掉
         try{
             return jt.query(sql, (rs, n) -> new CommodityTags(
                     rs.getString("CommoditySubTag"),
@@ -32,8 +32,8 @@ public class ComTagsDao {
 
     //新增小類及大類(確認要新增的為空,新增,確認有改或不為空)
     public String addCommodityTag(CommodityTags Tag) {
+        String sql ="INSERT INTO commodity_tags(CommoditySubTag, CommodityMainTag) VALUES (?, ?)";
         try {
-            String sql ="INSERT INTO commodity_tags(CommodityTag) VALUES (?)";
             int rowsAffected = jt.update(sql,
                     cstool.utf82iso(Tag.getCommoditySubTag()));
             return "新增" + rowsAffected + "筆資料!";
@@ -51,11 +51,22 @@ public class ComTagsDao {
     //刪除小類及大類(確認有該小類或大類,刪除,確認為空)
     // delete from commodity_tags where CommoditySubTag = " "
     public String deleteCommodityTag(List<Long> idList) {//idList要改
+        String sql="DELETE FROM commodity_tags WHERE CommoditySubTag = ? , CommodityMainTag = ? ";
+        try {
 
+        }
+        catch (Exception e){
+
+        }
     }
     //更新大類(找到指定大類,更新資料,確認影響行數不<=0)
     public String updateCommodityTag(CommodityTags commodityTags) {
+        String sql="UPDATE commodity_tags WHERE  CommoditySubTag = ? , CommodityMainTag = ? ";
+        try {
 
+        }
+        catch (Exception e){
 
+        }
     }
 }
