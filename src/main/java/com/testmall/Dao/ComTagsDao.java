@@ -32,7 +32,7 @@ public class ComTagsDao {
 
     //新增小類及大類(確認要新增的為空,新增,確認有改或不為空)
     public String addCommodityTag(CommodityTags Tag) {
-        String sql ="INSERT INTO commodity_tags(CommoditySubTag, CommodityMainTag) VALUES (?, ?)";
+        String sql = "INSERT INTO commodity_tags(CommoditySubTag, CommodityMainTag) VALUES (?, ?)";
         try {
             int rowsAffected = jt.update(sql,
                     cstool.utf82iso(Tag.getCommoditySubTag()));
@@ -51,7 +51,7 @@ public class ComTagsDao {
     //刪除小類及大類(確認有該小類或大類,刪除,確認為空)
     // delete from commodity_tags where CommoditySubTag = " "
     public String deleteCommodityTag(List<Long> idList) {//idList要改
-        String sql="DELETE FROM commodity_tags WHERE CommoditySubTag = ? , CommodityMainTag = ? ";
+        String sql = "DELETE FROM commodity_tags WHERE CommoditySubTag = ? , CommodityMainTag = ? ";
         try {
 
         }
@@ -61,7 +61,7 @@ public class ComTagsDao {
     }
     //更新大類(找到指定大類,更新資料,確認影響行數不<=0)
     public String updateCommodityTag(CommodityTags commodityTags) {
-        String sql="UPDATE commodity_tags WHERE  CommoditySubTag = ? , CommodityMainTag = ? ";
+        String sql = "UPDATE commodity_tags WHERE  CommoditySubTag = ? , CommodityMainTag = ? ";
         try {
 
         }
