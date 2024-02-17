@@ -55,6 +55,7 @@ public class ComTagsDao {
     public String deleteCommodityTag(List<Long> idList) {//idList要改
         String sql = "DELETE FROM commodity_tags WHERE CommoditySubTag = ? , CommodityMainTag = ? ";
         try {
+            hihi
 
         }
         catch (Exception e){
