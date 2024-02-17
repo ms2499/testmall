@@ -35,11 +35,13 @@ public class ComTagsDao {
         String sql = "INSERT INTO commodity_tags(CommoditySubTag, CommodityMainTag) VALUES (?, ?)";
         try {
             int rowsAffected = jt.update(sql,
-                    cstool.utf82iso(Tag.getCommoditySubTag()));
+                    cstool.utf82iso(Tag.getCommoditySubTag()),
+                    cstool.utf82iso(Tag.getCommodityMainTag())
+            );
             return "新增" + rowsAffected + "筆資料!";
         }
         catch (Exception e){
-            cstool.pLogln(e.toString(), "ComTagsDao.addCommoditySubTag");
+            cstool.pLogln(e.toString(), "ComTagsDao.addCommodityTag");
             return "資料庫新增失敗!";
             /*pLogIn是用來寫入日誌的功能，在這個例子中，它至少接受兩個參數：
             第一個參數 e.toString() 是異常物件的字串表示形式，
@@ -60,13 +62,42 @@ public class ComTagsDao {
         }
     }
     //更新大類(找到指定大類,更新資料,確認影響行數不<=0)
-    public String updateCommodityTag(CommodityTags commodityTags) {
+    public String updateCommodityTag(CommodityTags Tag) {
         String sql = "UPDATE commodity_tags WHERE  CommoditySubTag = ? , CommodityMainTag = ? ";
         try {
-
+            int rowsAffected = jt.update(sql,
+                    cstool.utf82iso(Tag.getCommoditySubTag()),
+                    cstool.utf82iso(Tag.getCommodityMainTag())
+            );
+            return "更新" + rowsAffected + "筆資料!";
         }
         catch (Exception e){
-
+            cstool.pLogln(e.toString(), "ComTagsDao.updateCommodityTag");
+            return "資料庫更新失敗!";
         }
     }
 }
+
+/*
+    public String deleteItem(List<Long> idList){
+        try {
+            String sql = "DELETE FROM commodities WHERE CommodityID in(";
+            StringBuilder str = new StringBuilder(sql);
+            for (int i = 0; i < idList.size(); i++){
+                str.append(idList.get(i));
+                if (i == (idList.size() - 1))
+                    str.append(");");
+                else
+                    str.append(",");
+            }
+
+            int rowsAffected = jt.update(str.toString());
+
+            return "刪除" + rowsAffected + "筆資料!";
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "CommodityDao.deleteItem");
+            return "資料庫刪除失敗";
+        }
+    }
+ */
