@@ -1,6 +1,5 @@
 package com.testmall.Dao;
 
-import com.testmall.Model.Carts;
 import com.testmall.Model.OrderLists;
 import com.testmall.Tools.CharsetTool;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -21,12 +20,12 @@ public class OrderListsDao {
         try{
             List<OrderLists> orderList =
                     jt.query(sql, (rs, n) -> new OrderLists(
-                            rs.getInt("OrderSeq"),
-                            rs.getInt("OrderNo"),
-                            rs.getLong("OrderCommodityID"),
-                            rs.getInt("OrderQty"),
-                            rs.getInt("OrderPrice"),
-                            rs.getInt("OrderReturn")));
+                    rs.getInt("OrderSeq"),
+                    rs.getInt("OrderNo"),
+                    rs.getLong("OrderCommodityID"),
+                    rs.getInt("OrderQty"),
+                    rs.getInt("OrderPrice"),
+                    rs.getInt("OrderReturn")));
             return orderList;
         }catch (Exception e){
             e.printStackTrace();
@@ -34,17 +33,19 @@ public class OrderListsDao {
         }
     }
 
-    public OrderLists queryListsByNo(int no){
+    public List<OrderLists> queryListsByNo(int no){
         String sql = "SELECT * FROM orderlists WHERE OrderNo = " + no + ";";
 
         try{
-            return jt.queryForObject(sql, (rs, n) -> new OrderLists(
+            List<OrderLists> list =
+                    jt.query(sql, (rs, n) -> new OrderLists(
                     rs.getInt("OrderSeq"),
                     rs.getInt("OrderNo"),
                     rs.getLong("OrderCommodityID"),
                     rs.getInt("OrderQty"),
                     rs.getInt("OrderPrice"),
                     rs.getInt("OrderReturn")));
+            return  list;
         }catch (Exception e){
             e.printStackTrace();
             throw new RuntimeException("查詢失敗: " + e.getMessage());

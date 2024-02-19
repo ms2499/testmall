@@ -3,9 +3,7 @@ package com.testmall.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.testmall.Tools.CharsetTool;
-
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class UserOrders {
@@ -16,7 +14,7 @@ public class UserOrders {
     @JsonProperty(value = "orderAccount")
     private String orderAccount;
     @JsonProperty(value = "orderDate")
-    private String orderDate;
+    private Timestamp orderDate;
     @JsonProperty(value = "orderTotal")
     private int orderTotal;
 
@@ -26,7 +24,7 @@ public class UserOrders {
     public String getOrderAccount(){
         return orderAccount;
     }
-    public String getOrderDate() {
+    public Timestamp getOrderDate() {
         return orderDate;
     }
     public int getOrderTotal(){
@@ -40,14 +38,12 @@ public class UserOrders {
             this.orderAccount = account;
     }
 
-    public void setOrderDate(String date){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss");
-        Timestamp timestamp = Timestamp.valueOf(date);
-        LocalDateTime d = timestamp.toLocalDateTime();
-        this.orderDate = formatter.format(d);
+    public void setOrderDate(Timestamp date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        this.orderDate = Timestamp.valueOf(date.toLocalDateTime().format(formatter));
     }
 
-    public UserOrders(int no, String account, String date, int total){
+    public UserOrders(int no, String account, Timestamp date, int total){
         orderNo = no;
         setOrderAccount(account);
         setOrderDate(date);

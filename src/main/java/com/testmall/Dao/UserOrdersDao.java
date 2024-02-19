@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -30,10 +30,10 @@ public class UserOrdersDao {
         try{
             List<UserOrders> orderList =
                     jt.query(sql, (rs, n) -> new UserOrders(
-                            rs.getInt("OrderNo"),
-                            rs.getString("OrderAccount"),
-                            rs.getString("OrderDate"),
-                            rs.getInt("OrderTotal")));
+                    rs.getInt("OrderNo"),
+                    rs.getString("OrderAccount"),
+                    rs.getTimestamp("OrderDate"),
+                    rs.getInt("OrderTotal")));
 //            for (UserOrders c:orderList) {
 //                cstool.pLogln(c.getOrderAccount());
 //                cstool.pLogln(c.getOrderDate());
@@ -52,7 +52,7 @@ public class UserOrdersDao {
             return jt.queryForObject(sql, (rs, n) -> new UserOrders(
                     rs.getInt("OrderNo"),
                     rs.getString("OrderAccount"),
-                    rs.getString("OrderDate"),
+                    rs.getTimestamp("OrderDate"),
                     rs.getInt("OrderTotal")));
         }catch (Exception e){
             e.printStackTrace();
@@ -60,57 +60,27 @@ public class UserOrdersDao {
         }
     }
 
-    public String insertOrder(Carts carts){
+    public Integer insertOrder(Carts carts){
         try {
             // 創建 GeneratedKeyHolder 對象
             GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-            String sql = "INSERT INTO `userorders`(`OrderAccount`, `OrderDate`) VALUES(:account, :date);";
+            String sql = "INSERT INTO userorders (OrderAccount, OrderDate) VALUES(:account, :date);";
 
             // 使用 Map 封裝參數，key 就是 SQL 中對應的參數名稱
             Map<String, Object> params = new HashMap<>();
             params.put("account", cstool.utf82iso(carts.getCartAccount()));
-            params.put("date", cstool.utf82iso(String.valueOf(LocalDateTime.now())));
+//          params.put("date", cstool.utf82iso(String.valueOf(LocalDateTime.now())));
+            params.put("date", Timestamp.valueOf(LocalDateTime.now()));
 
             // 執行更新，返回受影響行數
             int retVal = this.namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(params), keyHolder);
 
             // 通過 keyHolder 獲取到自增值
-            int no = keyHolder.getKey().intValue();
-            return "" + no;
+            return keyHolder.getKey().intValue();
+
         }catch (Exception e){
             e.printStackTrace();
             throw new RuntimeException("新增失敗: " + e.getMessage());
-        }
-    }
-
-    public String insertOrder2(UserOrders userorders){
-        try {
-            String sql = "INSERT INTO userorders (OrderAccount, OrderDate, OrderTotal) " +
-                    "VALUES (?, ?, ?)";
-
-            int rowsAffected = jt.update(sql,
-                    cstool.utf82iso(userorders.getOrderAccount()),
-                    cstool.utf82iso(userorders.getOrderDate()),
-                    userorders.getOrderTotal());
-            return "新增" + rowsAffected + "筆訂單資料!";
-        }catch (Exception e){
-            e.printStackTrace();
-            return "資料庫新增失敗!";
-        }
-    }
-
-    public String insertOrder3(Carts carts){
-        try {
-            String sql = "INSERT INTO userorders (OrderAccount, OrderDate) " +
-                    "VALUES (?, ?)";
-
-            int rowsAffected = jt.update(sql,
-                    cstool.utf82iso(carts.getCartAccount()),
-                    cstool.utf82iso(String.valueOf(LocalDateTime.now())));
-            return "新增" + rowsAffected + "筆訂單資料!";
-        }catch (Exception e){
-            e.printStackTrace();
-            return "資料庫新增失敗!";
         }
     }
 
@@ -124,6 +94,38 @@ public class UserOrdersDao {
         }catch (Exception e){
             e.printStackTrace();
             return -1;
+        }
+    }
+
+    public String updateOrderTotal(int no, long total){
+        try {
+            String sql = "UPDATE userorders SET OrderTotal=? WHERE OrderNo = ?;";
+
+            int rowsAffected = jt.update(sql, total, no);
+
+            return "更新" + rowsAffected + "筆資料!";
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "UserOrdersDao.updateOrderTotal");
+            return "訂單總價計算錯誤!";
+        }
+    }
+
+    public String updateOrder(UserOrders userorders){
+        try {
+            String sql = "UPDATE userorders SET OrderAccount=?, OrderDate=?, OrderTotal=? "+
+                         "WHERE OrderNo = ?;";
+
+            int rowsAffected = jt.update(sql,
+                    cstool.utf82iso(userorders.getOrderAccount()),
+                    userorders.getOrderDate(),
+                    userorders.getOrderTotal(),
+                    userorders.getOrderNo());
+            return "更新" + rowsAffected + "筆資料!";
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "UserOrdersDao.updateItem");
+            return "資料庫更新失敗!";
         }
     }
 }
