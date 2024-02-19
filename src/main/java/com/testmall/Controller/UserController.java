@@ -8,7 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Controller
 @RequestMapping("/user")
@@ -44,5 +49,34 @@ public class UserController {
     @ResponseBody
     public String deleteUser(@RequestBody(required = false) List<String> accounts){
         return userService.deleteUser(accounts);
+    }
+
+    @PostMapping("/userLogin")
+    @ResponseBody
+    public String userLogin(HttpServletResponse response, @RequestBody Userinfo user){
+        String result = userService.userLogin(user.getUserAccount(), user.getUserPassword());
+        if (result.equals("0001")){
+            response.setStatus(401);
+            return "無此帳號!";
+        }
+        else if (result.equals("0002")){
+            response.setStatus(401);
+            return "密碼錯誤!";
+        }
+        else
+            return result;
+    }
+
+    @PostMapping("/userVerify")
+    @ResponseBody
+    public String userVerify(HttpServletRequest request){
+        String authorHeader  = request.getHeader(AUTHORIZATION);
+        String bearer ="Bearer ";
+        String token = "";
+        if (authorHeader != null && authorHeader.startsWith(bearer)) {
+            token = authorHeader.substring(bearer.length()).replace(" ", "");
+        }
+
+        return userService.verifyUser(token.replace(" ", ""));
     }
 }

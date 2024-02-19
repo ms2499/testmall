@@ -24,8 +24,12 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.session:spring-session-jdbc")
 	implementation("org.springframework.session:spring-session-core")
+	implementation("org.springframework.cloud:spring-cloud-context:3.1.2")
+	implementation("io.jsonwebtoken:jjwt-api:0.12.5")
 	implementation("commons-codec:commons-codec:1.16.0")
 	runtimeOnly("com.microsoft.sqlserver:mssql-jdbc")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.5")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.5")
 	testImplementation ("org.apache.httpcomponents.client5:httpclient5")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

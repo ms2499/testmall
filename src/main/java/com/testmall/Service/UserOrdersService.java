@@ -41,11 +41,12 @@ public class UserOrdersService {
         int failCount = 0;
         for (int number:no){
             if (ordersDao.deleteOrder(number) == 1){
-                if (olService.deleteList(number) == 1){
-                    rowsAffected++;
-                }else {
-                    failCount++;
-                }
+//                if (olService.deleteList(number) == 1){
+//                    rowsAffected++;
+//                }else {
+//                    failCount++;
+//                }
+                rowsAffected++;
             }else {
                 failCount++;
             }
