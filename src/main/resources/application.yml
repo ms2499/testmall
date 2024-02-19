@@ -43,6 +43,7 @@ spring:
 custom:
 #  osType: OSS
   osType: WIN
+  secretKey: "3JAO0PeW/WFt0moyEW2cv0SDjfnbAIXcZ6QNiwPxZAQ="
 
 #spring.http.encoding.charset=UTF-8
 #spring.http.encoding.force=true

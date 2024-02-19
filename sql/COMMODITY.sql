@@ -50,7 +50,7 @@ CREATE TABLE dbo.carts (							/*購物車表*/
 	CartAccount VARCHAR(30) NOT NULL,				/*帳號*/
 	CartCommodityID BIGINT NOT NULL,				/*商品編號*/
 	CartQty INT NULL,								/*購買數量*/
-	FOREIGN KEY (CartAccount) REFERENCES userinfo(UserAccount),
+	FOREIGN KEY (CartAccount) REFERENCES userinfo(UserAccount) ON DELETE CASCADE, 
 	FOREIGN KEY (CartCommodityID) REFERENCES commodities(CommodityID)
 );
 
@@ -61,7 +61,7 @@ CREATE TABLE dbo.userorders (						/*訂單表*/
 	OrderAccount VARCHAR(30) NOT NULL,				/*帳號*/
 	OrderDate DATETIME NULL,						/*日期*/
 	OrderTotal BIGINT NULL,                         /*總金額*/
-	FOREIGN KEY (OrderAccount) REFERENCES userinfo(UserAccount)
+	FOREIGN KEY (OrderAccount) REFERENCES userinfo(UserAccount) ON DELETE CASCADE
 );
 
 CREATE INDEX IX_orders_account ON userorders(OrderAccount);
@@ -74,7 +74,7 @@ CREATE TABLE dbo.orderlists (						/*訂單商品資訊*/
 	OrderPrice BIGINT NULL,							/*總金額*/
 	OrderReturn BIT NULL,							/*此商品是否退貨*/
 	FOREIGN KEY (OrderCommodityID) REFERENCES commodities(CommodityID),
-	FOREIGN KEY (OrderNo) REFERENCES userorders(OrderNo)
+	FOREIGN KEY (OrderNo) REFERENCES userorders(OrderNo) ON DELETE CASCADE
 );
 
 CREATE INDEX IX_orderlist_no ON orderlists(OrderNo);
@@ -123,8 +123,8 @@ VALUES ('博美3', 100, 100, '狗', 'static/images/博美3.jpeg', '博美3 Detai
 INSERT INTO commodities (CommodityName, CommodityQty, CommodityPrice, CommodityTag, CommodityImgPath, CommodityDetail)
 VALUES ('博美4', 100, 100, '狗', 'static/images/博美1.jpg', '博美4 Detail...');
 
-INSERT INTO userinfo (UserAccount, UserPassword, UserName, UserPhone, UserEmail, UserAddress, UserMsg)
-VALUES ('user1', 'user1', '測試員', '01234567890', 'user1@mail', '台北', 'User message...');
+INSERT INTO userinfo (UserAccount, UserPassword, UserSalt, UserName, UserPhone, UserEmail, UserAddress, UserMsg)
+VALUES ('user1', '4d5217dd5b1602527d6442fb7cd196f1', '7ae6f3fa27654c9ebc9a787c49e35cfc', '測試員', '01234567890', 'user1@mail', '台北', 'User message...');
 
 INSERT INTO carts (CartAccount, CartCommodityID, CartQty)
 VALUES ('user1', 1, 2);

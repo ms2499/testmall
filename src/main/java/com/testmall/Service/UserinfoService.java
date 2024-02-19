@@ -6,9 +6,21 @@ import com.testmall.Model.Userinfo;
 import com.testmall.Tools.CharsetTool;
 import com.testmall.Tools.MD5util;
 import com.testmall.Tools.UUIDutil;
+import com.testmall.properties.CustomProperty;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.io.Encoders;
+import io.jsonwebtoken.security.Keys;
+import io.jsonwebtoken.security.SignatureAlgorithm;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.crypto.SecretKey;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -65,4 +77,46 @@ public class UserinfoService {
         return "共刪除"+accounts.size()+"筆, 成功"+rowsAffected+"筆, 失敗"+failCount+"筆!";
     }
 
+    public String userLogin(String account, String password){
+        Userinfo user = userDao.queryByAccount(account);
+        String result = "9999";
+        if (user != null){
+            String salt = user.getUserSalt().trim();
+            String md5Password = MD5util.md5(password, salt);
+            if (user.getUserPassword().equals(md5Password)){
+                //設定30min過期
+                Date expireDate = new Date(System.currentTimeMillis()+30*60*1000);
+                SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(CustomProperty.secretKey));
+                result = Jwts.builder()
+                        .subject(account) //以account當subject
+                        .expiration(expireDate)
+                        .signWith(secretKey)
+                        .compact();
+            }else{
+                result = "0002"; //密碼錯誤
+            }
+        }else{
+            result = "0001"; //查無帳號
+        }
+        return result;
+    }
+
+    public String verifyUser(String jwt){
+        try {
+            SecretKey secretKey = Keys.hmacShaKeyFor(Decoders.BASE64.decode(CustomProperty.secretKey));
+            Jws<Claims> claimsJws = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(jwt);
+            Claims claimsPayload = claimsJws.getPayload();
+            String account = claimsPayload.getSubject();
+            return "0000";
+        }catch (SignatureException se) {
+            cstool.pLogln(se.toString(), "UserinfoService.verifyUser");
+            return "0001"; //驗證失敗
+        }catch (ExpiredJwtException ee){
+            cstool.pLogln(ee.toString(), "UserinfoService.verifyUser");
+            return "0002"; //Token過期
+        }catch (Exception e){
+            cstool.pLogln(e.toString(), "UserinfoService.verifyUser");
+            return "9999"; //未知錯誤
+        }
+    }
 }
