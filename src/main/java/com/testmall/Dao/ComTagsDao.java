@@ -52,7 +52,7 @@ public class ComTagsDao {
 
     //刪除小類及大類(確認有該小類或大類,刪除,確認為空)
     // delete from commodity_tags where CommoditySubTag = " "
-    public String deleteCommodityTag(List<Long> tags) {
+    public String deleteCommodityTag(List<String> tags) {
         try {
             // 建立 SQL 語句
             String sql = "DELETE FROM commodity_tags WHERE CommoditySubTag IN (";

@@ -23,7 +23,7 @@ public class ComTagsService {
         return comTagsDao.addCommodityTag(tags);
     }
     //刪除
-    public String deleteCommodityTag(List<Long> tags){
+    public String deleteCommodityTag(List<String> tags){
         return comTagsDao.deleteCommodityTag(tags);
     }
     //更新(=)
