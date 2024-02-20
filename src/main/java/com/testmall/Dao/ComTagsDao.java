@@ -52,37 +52,38 @@ public class ComTagsDao {
 
     //刪除小類及大類(確認有該小類或大類,刪除,確認為空)
     // delete from commodity_tags where CommoditySubTag = " "
-    public String deleteCommodityTag(List<String> tags) {
+    public String deleteCommodityTag(List<String> subTags, List<String> mainTags) {
         try {
             // 建立 SQL 語句
             String sql = "DELETE FROM commodity_tags WHERE CommoditySubTag IN (";
             StringBuilder str = new StringBuilder(sql);
 
             // 添加 CommoditySubTag 的占位符
-            for (int i = 0; i < tags.size(); i++) {
+            for (int i = 0; i < subTags.size(); i++) {
                 str.append("?");
-                if (i != (tags.size() - 1))
+                if (i != (subTags.size() - 1))
                     str.append(",");
             }
             str.append(") AND CommodityMainTag IN (");
 
             // 添加 CommodityMainTag 的占位符
-            for (int i = 0; i < tags.size(); i++) {
+            for (int i = 0; i < mainTags.size(); i++) {
                 str.append("?");
-                if (i != (tags.size() - 1))
+                if (i != (mainTags.size() - 1))
                     str.append(",");
             }
             str.append(")");
 
             // 執行 prepared statement，將 tags 中的值填充到佔位符中
-            int rowsAffected = jt.update(str.toString(), tags.toArray());
+            int rowsAffected = jt.update(str.toString(), subTags.toArray(), mainTags.toArray());
 
             return "刪除" + rowsAffected + "筆資料!";
         } catch (Exception e) {
-            cstool.pLogln(e.toString(), "CommodityDao.deleteCommodityTag");
+            cstool.pLogln(e.toString(), "ComTagsDao.deleteCommodityTag");
             return "資料庫刪除失敗";
         }
     }
+
 
 
 
