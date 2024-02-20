@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -75,14 +76,24 @@ public class ComTagsDao {
             str.append(")");
 
             // 執行 prepared statement，將 tags 中的值填充到佔位符中
-            int rowsAffected = jt.update(str.toString(), subTags.toArray(), mainTags.toArray());
+            List<String> encodedSubTags = new ArrayList<>();
+            List<String> encodedMainTags = new ArrayList<>();
+            for (String subTag : subTags) {
+                encodedSubTags.add(cstool.utf82iso(subTag));
+            }
+            for (String mainTag : mainTags) {
+                encodedMainTags.add(cstool.utf82iso(mainTag));
+            }
+
+            int rowsAffected = jt.update(str.toString(), encodedSubTags.toArray(), encodedMainTags.toArray());
 
             return "刪除" + rowsAffected + "筆資料!";
         } catch (Exception e) {
-            cstool.pLogln(e.toString(), "ComTagsDao.deleteCommodityTag");
+            cstool.pLogln(e.toString(), "CommodityDao.deleteCommodityTag");
             return "資料庫刪除失敗";
         }
     }
+
 
 
 
