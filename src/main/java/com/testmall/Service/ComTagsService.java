@@ -19,16 +19,16 @@ public class ComTagsService {
         return comTagsDao.queryAll();
     }
     //新增
-    public String addCommodityTag(CommodityTags commodityTags){
-        return comTagsDao.addCommodityTag(commodityTags);
+    public String addCommodityTag(CommodityTags tags){
+        return comTagsDao.addCommodityTag(tags);
     }
     //刪除
-    public String deleteCommodityTag(List<Long> idList){//idList要改
-        return comTagsDao.deleteCommodityTag(idList);
+    public String deleteCommodityTag(List<Long> tags){
+        return comTagsDao.deleteCommodityTag(tags);
     }
     //更新(=)
-    public String updateCommodityTag(CommodityTags commodityTags){
-        return comTagsDao.updateCommodityTag(commodityTags);
+    public String updateCommodityTag(CommodityTags tags){
+        return comTagsDao.updateCommodityTag(tags);
     }
 
 }

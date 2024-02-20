@@ -31,12 +31,12 @@ public class ComTagsDao {
     }
 
     //新增小類及大類(確認要新增的為空,新增,確認有改或不為空)
-    public String addCommodityTag(CommodityTags Tag) {
+    public String addCommodityTag(CommodityTags tags) {
         String sql = "INSERT INTO commodity_tags(CommoditySubTag, CommodityMainTag) VALUES (?, ?)";
         try {
             int rowsAffected = jt.update(sql,
-                    cstool.utf82iso(Tag.getCommoditySubTag()),
-                    cstool.utf82iso(Tag.getCommodityMainTag())
+                    cstool.utf82iso(tags.getCommoditySubTag()),
+                    cstool.utf82iso(tags.getCommodityMainTag())
             );
             return "新增" + rowsAffected + "筆資料!";
         }
@@ -52,23 +52,47 @@ public class ComTagsDao {
 
     //刪除小類及大類(確認有該小類或大類,刪除,確認為空)
     // delete from commodity_tags where CommoditySubTag = " "
-    public String deleteCommodityTag(List<Long> idList) {//idList要改
-        String sql = "DELETE FROM commodity_tags WHERE CommoditySubTag = ? , CommodityMainTag = ? ";
+    public String deleteCommodityTag(List<Long> tags) {
         try {
-            hihi
+            // 建立 SQL 語句
+            String sql = "DELETE FROM commodity_tags WHERE CommoditySubTag IN (";
+            StringBuilder str = new StringBuilder(sql);
 
-        }
-        catch (Exception e){
+            // 添加 CommoditySubTag 的占位符
+            for (int i = 0; i < tags.size(); i++) {
+                str.append("?");
+                if (i != (tags.size() - 1))
+                    str.append(",");
+            }
+            str.append(") AND CommodityMainTag IN (");
 
+            // 添加 CommodityMainTag 的占位符
+            for (int i = 0; i < tags.size(); i++) {
+                str.append("?");
+                if (i != (tags.size() - 1))
+                    str.append(",");
+            }
+            str.append(")");
+
+            // 執行 prepared statement，將 tags 中的值填充到佔位符中
+            int rowsAffected = jt.update(str.toString(), tags.toArray());
+
+            return "刪除" + rowsAffected + "筆資料!";
+        } catch (Exception e) {
+            cstool.pLogln(e.toString(), "CommodityDao.deleteCommodityTag");
+            return "資料庫刪除失敗";
         }
     }
+
+
+
     //更新大類(找到指定大類,更新資料,確認影響行數不<=0)
-    public String updateCommodityTag(CommodityTags Tag) {
+    public String updateCommodityTag(CommodityTags tags) {
         String sql = "UPDATE commodity_tags WHERE  CommoditySubTag = ? , CommodityMainTag = ? ";
         try {
             int rowsAffected = jt.update(sql,
-                    cstool.utf82iso(Tag.getCommoditySubTag()),
-                    cstool.utf82iso(Tag.getCommodityMainTag())
+                    cstool.utf82iso(tags.getCommoditySubTag()),
+                    cstool.utf82iso(tags.getCommodityMainTag())
             );
             return "更新" + rowsAffected + "筆資料!";
         }
