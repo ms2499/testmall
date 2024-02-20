@@ -1,10 +1,8 @@
 package com.testmall.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 
 @ConfigurationProperties(prefix = "custom")
-@RefreshScope
 public class CustomProperty {
     public static String osType;
     public static String secretKey;
