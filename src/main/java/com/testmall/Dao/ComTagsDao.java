@@ -102,27 +102,3 @@ public class ComTagsDao {
         }
     }
 }
-
-/*
-    public String deleteItem(List<Long> idList){
-        try {
-            String sql = "DELETE FROM commodities WHERE CommodityID in(";
-            StringBuilder str = new StringBuilder(sql);
-            for (int i = 0; i < idList.size(); i++){
-                str.append(idList.get(i));
-                if (i == (idList.size() - 1))
-                    str.append(");");
-                else
-                    str.append(",");
-            }
-
-            int rowsAffected = jt.update(str.toString());
-
-            return "刪除" + rowsAffected + "筆資料!";
-        }
-        catch (Exception e){
-            cstool.pLogln(e.toString(), "CommodityDao.deleteItem");
-            return "資料庫刪除失敗";
-        }
-    }
- */
