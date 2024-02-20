@@ -88,7 +88,7 @@ public class ComTagsDao {
 
     //更新大類(找到指定大類,更新資料,確認影響行數不<=0)
     public String updateCommodityTag(CommodityTags tags) {
-        String sql = "UPDATE commodity_tags WHERE  CommoditySubTag = ? , CommodityMainTag = ? ";
+        String sql = "UPDATE commodity_tags SET CommodityMainTag = ? WHERE CommoditySubTag = ? ";
         try {
             int rowsAffected = jt.update(sql,
                     cstool.utf82iso(tags.getCommoditySubTag()),
