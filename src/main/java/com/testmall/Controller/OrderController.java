@@ -31,31 +31,25 @@ public class OrderController {
 
     @GetMapping("getByListNo")
     @ResponseBody
-    public OrderLists getListByNo(int no){
+    public List<OrderLists> getListByNo(int no){
         return listService.queryListsByNo(no);
     }
-
-//    @PostMapping("/insertOrder")
-//    @ResponseBody
-//    public String insertOrder(@RequestBody(required = false) UserOrders userorders, OrderLists orderlists){
-//        return orderService.insertOrder(userorders, orderlists);
-//    }
 
     @PostMapping("/insertOrder")
     @ResponseBody
     public String insertOrder(@RequestBody(required = false) List<Carts> carts){
-        StringBuilder result = new StringBuilder();
-        for (Carts cart:carts){
-            String insertionResult = orderService.insertOrder(cart);
-            result.append(insertionResult).append("\n");
-//          return "共"+carts.size()+"筆";
-        }
-        return result.toString();
+        return orderService.insertOrder(carts);
     }
 
     @PostMapping("/deleteOrder")
     @ResponseBody
     public String deleteOrder(@RequestBody(required = false) List<Integer> no){
         return orderService.deleteOrder(no);
+    }
+
+    @PatchMapping("/updateOrder")
+    @ResponseBody
+    public String updateOrder(@RequestBody(required = false) UserOrders userorders){
+        return orderService.updateOrder(userorders);
     }
 }

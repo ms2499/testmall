@@ -22,17 +22,22 @@ public class UserOrdersService {
         return ordersDao.queryOrdersByNo(no);
     }
 
-//    public String insertOrder(UserOrders userorders,OrderLists orderlists){
-//        ordersDao.insertOrder(userorders);
-//        return olService.insertList(orderlists);
-//    }
-
-    public String insertOrder(Carts carts){
-        int no = Integer.parseInt(ordersDao.insertOrder(carts));
-        if (no > 0){
-            return olService.insertList(carts, no);
-        }else{
-            return "訂單新增失敗!";
+    public String insertOrder(List<Carts> carts){
+//      int no = ordersDao.insertOrder((Carts) carts);
+        int no = ordersDao.insertOrder(carts.get(0));
+        long total = 0;
+        if (no > 0) {
+            for (Carts cart:carts) {
+                long price = olService.insertList(cart, no);
+                total = total + price;
+            }
+            //回填訂單總金額
+            if(total > 0) {
+                ordersDao.updateOrderTotal(no, total);
+            }
+            return "新增訂單成功!";
+        } else {
+            return "新增訂單失敗!";
         }
     }
 
@@ -41,6 +46,7 @@ public class UserOrdersService {
         int failCount = 0;
         for (int number:no){
             if (ordersDao.deleteOrder(number) == 1){
+//由DB連動,這邊不需處裡
 //                if (olService.deleteList(number) == 1){
 //                    rowsAffected++;
 //                }else {
@@ -52,5 +58,9 @@ public class UserOrdersService {
             }
         }
         return "共刪除"+no.size()+"筆, 成功"+rowsAffected+"筆, 失敗"+failCount+"筆!";
+    }
+
+    public String updateOrder(UserOrders userorders){
+        return ordersDao.updateOrder(userorders);
     }
 }

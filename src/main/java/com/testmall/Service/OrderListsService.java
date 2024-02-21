@@ -7,7 +7,6 @@ import com.testmall.Model.OrderLists;
 import com.testmall.Dao.OrderListsDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -22,14 +21,11 @@ public class OrderListsService {
 //        return listsDao.queryAllLists();
 //    }
 
-    public OrderLists queryListsByNo(int no){
+    public List<OrderLists> queryListsByNo(int no){
         return listsDao.queryListsByNo(no);
     }
 
-//    public String insertList(OrderLists orderlists){
-//        return listsDao.insertList(orderlists);
-//    }
-    public String insertList(Carts carts, int no) {
+    public long insertList(Carts carts, int no) {
         int seq = 0;
         long id = carts.getCartCommodityID();
         int qty = carts.getCartQty();
@@ -38,14 +34,15 @@ public class OrderListsService {
         Commodities Commodities = comDao.queryById(id);
         long price = 0;
         if (Commodities == null) {
-            return "商品ID不存在";
+            return 0;
         } else {
-            price = Commodities.getCommodityPrice();
+            price = Commodities.getCommodityPrice() * qty;
         }
         int ret = 0;
 
         OrderLists list = new OrderLists(seq, no, id, qty, price, ret);
-        return listsDao.insertList(list);
+        listsDao.insertList(list);
+        return price;
     }
 
     public int deleteList(Integer no){
