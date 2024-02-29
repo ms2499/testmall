@@ -26,7 +26,7 @@ CREATE TABLE dbo.commodities (					/*商品表*/
 	CommoditySaleFlag BIT NULL DEFAULT 1,		/*是否銷售中*/
 	CommodityDiscount BIT NULL DEFAULT 0,		/*是否有折扣*/
 	CommodityDisRate NUMERIC(1) NULL DEFAULT 0,	/*幾折*/
-	FOREIGN KEY (CommodityTag) REFERENCES commodity_tags(CommoditySubTag)
+	FOREIGN KEY (CommodityTag) REFERENCES commodity_tags(CommoditySubTag) ON UPDATE CASCADE
 );
 
 CREATE INDEX IX_commodities_tag ON commodities(CommodityTag);

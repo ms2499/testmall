@@ -24,6 +24,10 @@ public class CommodityService {
         return comDao.queryByTag(tag);
     }
 
+    public List<Commodities> queryDiscountCom() {
+        return comDao.queryDiscountCom();
+    }
+
     public String insertItem(Commodities commodities){
         return comDao.insertItem(commodities);
     }

@@ -32,6 +32,13 @@ public class ComController {
         return comService.queryByTag(tag);
     }
 
+    @GetMapping("getDiscountCom")
+    @ResponseBody
+    public List<Commodities> getDiscountCom(){
+        return comService.queryDiscountCom();
+    }
+
+
     @PostMapping("/insertItem")
     @ResponseBody
     public String insertItem(@RequestBody(required = false) Commodities commodities){

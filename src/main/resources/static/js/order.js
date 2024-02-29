@@ -71,7 +71,7 @@ function getAll(){
                     '<tr>'+
                         '<th scope="row">'+
                             '<div class="form-check">'+
-                                '<input class="form-check-input" type="checkbox" value="" id="checkbox-'+n.OrderNo+'">'+
+                                '<input class="form-check-input" type="checkbox" value="" id="checkbox-'+n.orderNo+'">'+
                             '</div>'+
                         '</th>'+
                         '<td>'+n.orderNo+'</td>'+

@@ -32,7 +32,9 @@
                         </div>
                         <div class="mb-3">
                             <label for="insert-tag" class="col-form-label">商品分類:</label>
-                            <input type="text" class="form-control" id="insert-tag">
+                            <input type="text" list="tags" class="form-control" id="insert-tag">
+                            <datalist id="tags">
+                            </datalist>
                         </div>
                         <div class="mb-3">
                             <label for="insert-imgPath" class="col-form-label">圖片位址:</label>
@@ -86,7 +88,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="update-tag" class="col-form-label">商品分類:</label>
-                            <input type="text" class="form-control" id="update-tag">
+                            <input type="text" list="tags" class="form-control" id="update-tag">                            
                         </div>
                         <div class="mb-3">
                             <label for="update-imgPath" class="col-form-label">圖片位址:</label>

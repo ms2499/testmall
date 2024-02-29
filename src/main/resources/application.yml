@@ -14,14 +14,14 @@ server:
 
 spring:
   datasource:
-#    driver-class-name: com.tandem.sqlmx.SQLMXDriver
-#    url: "jdbc:sqlmx:"
-#    hikari:
-#      catalog: mallcat
-#      schema: mallsch
-    url: jdbc:sqlserver://localhost;databaseName=testmall;encrypt=true;trustServerCertificate=true
-    username: boss
-    password: boss
+    driver-class-name: com.tandem.sqlmx.SQLMXDriver
+    url: "jdbc:sqlmx:"
+    hikari:
+      catalog: mallcat
+      schema: mallsch
+#    url: jdbc:sqlserver://localhost;databaseName=testmall;encrypt=true;trustServerCertificate=true
+#    username: boss
+#    password: boss
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
@@ -41,8 +41,8 @@ spring:
 
 # 自訂參數
 custom:
-#  osType: OSS
-  osType: WIN
+  osType: OSS
+#  osType: WIN
   secretKey: "3JAO0PeW/WFt0moyEW2cv0SDjfnbAIXcZ6QNiwPxZAQ="
 
 #spring.http.encoding.charset=UTF-8
