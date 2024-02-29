@@ -67,7 +67,6 @@ public class CommodityDao {
     }
 
     public List<Commodities> queryByTag(String tag){
-//        String sql = "SELECT * FROM commodities WHERE CommodityTag = '" + cstool.utf82iso(tag) + "';";
         String sql = "SELECT * FROM commodities WHERE CommodityTag = ?";
 
         try{
@@ -82,6 +81,30 @@ public class CommodityDao {
                             rs.getByte("CommodityDiscount"),
                             rs.getByte("CommodityDisRate")),
                             cstool.utf82iso(tag));
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "CommodityDao.queryByTag");
+            return null;
+        }
+    }
+
+    public List<Commodities> queryDiscountCom(){
+        String sql = "SELECT * FROM commodities WHERE CommodityDiscount = 1";
+
+        try{
+            return jt.query(sql, (rs, n) -> new Commodities(rs.getLong("CommodityID"),
+                            rs.getString("CommodityName"),
+                            rs.getInt("CommodityQty"),
+                            rs.getLong("CommodityPrice"),
+                            rs.getString("CommodityTag"),
+                            rs.getString("CommodityImgPath"),
+                            rs.getString("CommodityDetail"),
+                            rs.getByte("CommoditySaleFlag"),
+                            rs.getByte("CommodityDiscount"),
+                            rs.getByte("CommodityDisRate")));
         }
         catch (EmptyResultDataAccessException e){
             return null;

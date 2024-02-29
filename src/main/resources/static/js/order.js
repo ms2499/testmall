@@ -71,13 +71,13 @@ function getAll(){
                     '<tr>'+
                         '<th scope="row">'+
                             '<div class="form-check">'+
-                                '<input class="form-check-input" type="checkbox" value="" id="checkbox-'+n.OrderNo+'">'+
+                                '<input class="form-check-input" type="checkbox" value="" id="checkbox-'+n.orderNo+'">'+
                             '</div>'+
                         '</th>'+
-                        '<td>'+n.OrderNo+'</td>'+
-                        '<td>'+n.OrderAccount+'</td>'+
-                        '<td>'+n.OrderDate+'</td>'+
-                        '<td>'+n.OrderTotal+'</td>'+
+                        '<td>'+n.orderNo+'</td>'+
+                        '<td>'+n.orderAccount+'</td>'+
+                        '<td>'+n.orderDate+'</td>'+
+                        '<td>'+n.orderTotal+'</td>'+
                     '</tr>');
             })
         },
@@ -106,7 +106,7 @@ $('#updateModal').on('show.bs.modal', function (event) {
         let formList = $('#update-account').parents("form").children()
 
         for (let i = 0; i < formList.length; i++){
-            $(formList).eq(i).children("input").val($(childList).eq(i + 1).text())
+            $(formList).eq(i).children("input").val($(childList).eq(i).text())
         }
     }
 })

@@ -22,20 +22,25 @@ public class UserLoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
-        String authorHeader  = request.getHeader(AUTHORIZATION);
-        String bearer ="Bearer ";
-        if (authorHeader != null && authorHeader.startsWith(bearer)){
-            String token = authorHeader.substring(bearer.length()).replace(" ", "");
-            return userService.verifyUser(token).equals("0000");
-        }else {
-            response.setStatus(401);
-            response.setCharacterEncoding("UTF-8");
-            response.setContentType("text/html;charset=utf-8");
-            PrintWriter out = response.getWriter();
-            out.write("請先登入!");
-            out.flush();
-            out.close();
-            return false;
+        if (request.getSession().getAttribute("manAccount") != null) {
+            //若是管理員登入
+            return true;
+        }else{
+            String authorHeader  = request.getHeader(AUTHORIZATION);
+            String bearer ="Bearer ";
+            if (authorHeader != null && authorHeader.startsWith(bearer)){
+                String token = authorHeader.substring(bearer.length()).replace(" ", "");
+                return userService.verifyUser(token).equals("0000");
+            }else {
+                response.setStatus(401);
+                response.setCharacterEncoding("UTF-8");
+                response.setContentType("text/html;charset=utf-8");
+                PrintWriter out = response.getWriter();
+                out.write("請先登入!");
+                out.flush();
+                out.close();
+                return false;
+            }
         }
     }
 

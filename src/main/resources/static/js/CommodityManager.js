@@ -108,7 +108,7 @@ $('#insertModal').on('show.bs.modal', function (event) {
     // var modalBodyInput = insertModal.querySelector('.modal-body input')
 
     $('#insert-imgPath').val("static/images/")
-    
+    getTags()
 })
 
 $('#insertModal').on('hide.bs.modal', function (event) {
@@ -258,4 +258,28 @@ function deleteItem(){
             window.alert("刪除失敗!")
         },
     });
+}
+
+function getTags(){
+    let dataUrl = remoteUrl + "/tag/getAll"
+
+    $.ajax({
+        url: dataUrl,
+        method: 'GET',
+        dataType: 'json',
+        async: true,      
+        contentType: 'application/json;charset=utf-8',
+        cache: false,
+
+        success: res => {
+            $('#tags').empty()
+            $.each(res, function(i, n){
+                $('#tags').append('<option value='+n.commoditySubTag+'>')
+            })
+        },
+
+        error: err => {
+            console.log(err)
+        },
+    })
 }
