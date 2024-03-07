@@ -27,6 +27,7 @@ dependencies {
 	implementation("org.springframework.cloud:spring-cloud-context:3.1.2")
 	implementation("io.jsonwebtoken:jjwt-api:0.12.5")
 	implementation("commons-codec:commons-codec:1.16.0")
+	implementation("org.springdoc:springdoc-openapi-ui:1.5.12")
 	runtimeOnly("com.microsoft.sqlserver:mssql-jdbc")
 	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.5")
 	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.5")

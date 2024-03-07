@@ -3,29 +3,40 @@ package com.testmall.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.testmall.Tools.CharsetTool;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
 
+@Schema(description = "管理員資料實體類")
 public class Manager implements Serializable {
     @JsonIgnore
     CharsetTool cstool = new CharsetTool();
     @JsonProperty(value = "manID")
+    @Schema(description = "管理員ID")
     Long manID;
     @JsonProperty(value = "manAccount")
+    @Schema(description = "帳號")
     String manAccount;
     @JsonProperty(value = "manPassword")
+    @Schema(description = "密碼")
     String manPassword;
     @JsonProperty(value = "manSalt")
+    @Schema(description = "加密鹽值")
     String manSalt;
     @JsonProperty(value = "manName")
+    @Schema(description = "姓名")
     String manName;
     @JsonProperty(value = "manPhone")
+    @Schema(description = "電話")
     String manPhone;
     @JsonProperty(value = "manEmail")
+    @Schema(description = "信箱")
     String manEmail;
     @JsonProperty(value = "manAddress")
+    @Schema(description = "通訊地址")
     String manAddress;
     @JsonProperty(value = "manMsg")
+    @Schema(description = "備註訊息")
     String manMsg;
 
     public Long getManID() {

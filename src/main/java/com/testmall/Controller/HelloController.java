@@ -1,5 +1,6 @@
 package com.testmall.Controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/back")
+@Hidden
 public class HelloController {
 //    @GetMapping("/")
 //    public String index() {

@@ -2,6 +2,7 @@ package com.testmall.Service;
 //指明這個Java檔案屬於com.testmall.Service包（package）
 import com.testmall.Dao.CartsDao;
 import com.testmall.Model.Carts;
+import io.swagger.v3.oas.annotations.Hidden;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 //導入了com.testmall.Model包中的CartItem類別，表示這個類別會使用到CartItem

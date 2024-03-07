@@ -3,16 +3,20 @@ package com.testmall.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.testmall.Tools.CharsetTool;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 //↓定義一個CommodityTags類別
+@Schema(description = "商品種類實體類")
 public class CommodityTags { /*商品種類表*/
     //↓前端的屬性都是Json,這裡讓轉碼工具不會被Json影響
     @JsonIgnore
     CharsetTool cstool= new CharsetTool();
     //↓Json屬性:會找到前端定義好的屬性，private那行定錯也沒關係
     @JsonProperty(value = "commoditySubTag")
+    @Schema(description = "小類")
     private String commoditySubTag; /*小類*/
     @JsonProperty(value = "commodityMainTag")
+    @Schema(description = "大類")
     private String commodityMainTag; /*大類*/
 //↓定義此類別建構子
     public CommodityTags(String commoditySubTag,String commodityMainTag) {

@@ -1,5 +1,8 @@
 package com.testmall.Controller;
 
+import io.swagger.v3.oas.annotations.Hidden;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,14 +15,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/cart")
+@Tag(name = "購物車相關API")
 public class CartController {
 
     @Autowired
-    private ShoppingCart shoppingCart;
+    ShoppingCart shoppingCart;
 
     // 2024-01-22修改-B 直接return List<Carts>物件會自動轉json格式
     @GetMapping("/getCartAll")
     @ResponseBody
+    @Operation(summary = "取得所有購物車資料")
     public List<Carts> getCartAll(){
 //        Gson gson = new Gson();
 //        String jsonList = gson.toJson(shoppingCart.queryAll());
@@ -29,6 +34,7 @@ public class CartController {
     // 2024-01-22修改-E
 
     @PostMapping("/add")
+    @Operation(summary = "新增購物車")
     public ResponseEntity<String> addCartItem(@RequestBody Carts item) {
         boolean added = shoppingCart.addCartItem(item);
         if (added){
@@ -39,6 +45,7 @@ public class CartController {
     }
 
     @DeleteMapping("/remove")
+    @Operation(summary = "刪除購物車")
   //public ResponseEntity<String> removeCartItem(@RequestParam Long productId) {
     public ResponseEntity<String> removeCartItem(@RequestBody List<Integer> cartSeq) {
         // 2024-01-22 這邊應該是要購物車流水號
@@ -51,6 +58,7 @@ public class CartController {
     }
 
     @PutMapping("/updateQty")
+    @Operation(summary = "更新購物車商品數量")
     public ResponseEntity<String> updateCartItemQuantity(
             // 2024-01-22 這邊應該是要傳入流水號參數,因為可能有很多人買同一商品,只有商品id不知道是誰的
           //@RequestParam Long productId,
@@ -65,6 +73,7 @@ public class CartController {
     }
 
     @PutMapping("/update")
+    @Operation(summary = "更新購物車")
     public ResponseEntity<String> updateCart(@RequestBody Carts carts) {
         boolean updated = shoppingCart.updateCart(carts);
         if (updated){
@@ -75,6 +84,7 @@ public class CartController {
     }
 
     @GetMapping("/view")
+    @Hidden
     public ResponseEntity<ShoppingCart> viewCart() {
         return ResponseEntity.ok(shoppingCart);
     }
