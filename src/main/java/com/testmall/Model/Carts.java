@@ -2,17 +2,22 @@ package com.testmall.Model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.testmall.Tools.CharsetTool;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "購物車實體類")
 public class Carts {
     // 2024-01-22新增,用來處理網頁與OSS系統的編碼問題
     // OSS編碼為ISO-8859-1,網頁編碼UTF-8,從資料庫讀出資料要放入物件的屬性時要轉為UTF-8
     // 相反在Dao那邊要寫入資料庫時要轉為ISO-8859-1
     @JsonIgnore
     CharsetTool cstool = new CharsetTool();
+    @Schema(description = "購物車流水號")
     private int cartSeq;    //購物車流水號
+    @Schema(description = "使用者帳號")
     private String cartAccount;    //使用者帳號
 
     //修改-Begin
+    @Schema(description = "商品ID")
     private Long cartCommodityID;
     //private List <Commodity> commodity;
     //商品編號&商品名稱 連到commodity的CommodityID & commodityName
@@ -36,6 +41,7 @@ public class Carts {
     //這句sql語法是去查commodities的資料，where後面是查詢條件
     //然後一樣透過JdbcTemplate把資料塞入Commodity物件
     //修改-End
+    @Schema(description = "購買數量")
     private int cartQty;    //購買數量
 
     public Carts(int cartSeq, String cartAccount, long commodityID, int cartQty) {

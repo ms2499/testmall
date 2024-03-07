@@ -3,31 +3,43 @@ package com.testmall.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.testmall.Tools.CharsetTool;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
 
+@Schema(description = "商品實體類")
 public class Commodities implements Serializable {
     @JsonIgnore
     CharsetTool cstool = new CharsetTool();
     @JsonProperty(value = "commodityID")
+    @Schema(description = "商品ID")
     private Long commodityID;
     @JsonProperty(value = "commodityName")
+    @Schema(description = "商品名稱")
     private String commodityName;
     @JsonProperty(value = "commodityQty")
+    @Schema(description = "商品數量")
     private int commodityQty;
     @JsonProperty(value = "commodityPrice")
+    @Schema(description = "商品價格")
     private Long commodityPrice;
     @JsonProperty(value = "commodityTag")
+    @Schema(description = "商品種類")
     private String commodityTag;
     @JsonProperty(value = "commodityImgPath")
+    @Schema(description = "商品圖片路徑")
     private String commodityImgPath;
     @JsonProperty(value = "commodityDetail")
+    @Schema(description = "商品詳細資料")
     private String commodityDetail;
     @JsonProperty(value = "commoditySaleFlag")
+    @Schema(description = "是否販賣中")
     private byte commoditySaleFlag;
     @JsonProperty(value = "commodityDiscount")
+    @Schema(description = "是否有折扣")
     private byte commodityDiscount;
     @JsonProperty(value = "commodityDisRate")
+    @Schema(description = "打幾折")
     private byte commodityDisRate;
 
     public Long getCommodityID(){

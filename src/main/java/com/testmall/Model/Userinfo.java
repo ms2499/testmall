@@ -3,27 +3,37 @@ package com.testmall.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.testmall.Tools.CharsetTool;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.io.Serializable;
 
+@Schema(description = "使用者資料實體類")
 public class Userinfo implements Serializable {
     @JsonIgnore
     CharsetTool cstool = new CharsetTool();
     @JsonProperty(value = "userAccount")
+    @Schema(description = "帳號")
     String userAccount;
     @JsonProperty(value = "userPassword")
+    @Schema(description = "密碼")
     String userPassword;
     @JsonProperty(value = "userSalt")
+    @Schema(description = "加密鹽值")
     String userSalt;
     @JsonProperty(value = "userName")
+    @Schema(description = "姓名")
     String userName;
     @JsonProperty(value = "userPhone")
+    @Schema(description = "電話")
     String userPhone;
     @JsonProperty(value = "userEmail")
+    @Schema(description = "信箱")
     String userEmail;
     @JsonProperty(value = "userAddress")
+    @Schema(description = "通訊地址")
     String userAddress;
     @JsonProperty(value = "userMsg")
+    @Schema(description = "訊息")
     String userMsg;
 
     public String getUserAccount() {

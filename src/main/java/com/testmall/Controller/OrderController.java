@@ -5,12 +5,16 @@ import com.testmall.Model.UserOrders;
 import com.testmall.Model.OrderLists;
 import com.testmall.Service.UserOrdersService;
 import com.testmall.Service.OrderListsService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @RestController
 @RequestMapping("/order")
+@Tag(name = "訂單相關API")
+@SecurityRequirement(name = "Bearer Authentication")
 public class OrderController {
     @Autowired
     UserOrdersService orderService;
