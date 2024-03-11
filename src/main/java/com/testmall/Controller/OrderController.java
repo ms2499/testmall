@@ -5,12 +5,16 @@ import com.testmall.Model.UserOrders;
 import com.testmall.Model.OrderLists;
 import com.testmall.Service.UserOrdersService;
 import com.testmall.Service.OrderListsService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @RestController
 @RequestMapping("/order")
+@Tag(name = "訂單相關API")
+@SecurityRequirement(name = "Bearer Authentication")
 public class OrderController {
     @Autowired
     UserOrdersService orderService;
@@ -39,6 +43,23 @@ public class OrderController {
     @ResponseBody
     public String insertOrder(@RequestBody(required = false) List<Carts> carts){
         return orderService.insertOrder(carts);
+    }
+
+//    @PostMapping("/insertOrder2")
+//    @ResponseBody
+//    public String insertOrder2(@RequestBody(required = false) List<Carts> carts){
+//        StringBuilder result = new StringBuilder();
+//        for (Carts cart:carts){
+//            String insertionResult = orderService.insertOrder(cart);
+//            result.append(insertionResult).append("\n");
+//        }
+//        return result.toString();
+//    }
+
+    @PostMapping("/insertOrderBackend")
+    @ResponseBody
+    public String insertOrderBackend(@RequestBody(required = false) UserOrders userorders){
+        return orderService.insertOrderBackend(userorders);
     }
 
     @PostMapping("/deleteOrder")
