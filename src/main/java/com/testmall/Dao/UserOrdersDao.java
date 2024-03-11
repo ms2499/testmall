@@ -84,6 +84,23 @@ public class UserOrdersDao {
         }
     }
 
+    public String insertOrderBackend(UserOrders userorders){
+        try {
+            String sql = "INSERT INTO UserOrders (OrderAccount, OrderDate, OrderTotal) " +
+                    "VALUES (?, ?, ?)";
+
+            int rowsAffected = jt.update(sql,
+                    cstool.utf82iso(userorders.getOrderAccount()),
+                    userorders.getOrderDate(),
+                    userorders.getOrderTotal());
+            return "新增" + rowsAffected + "筆資料!";
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "UserOrdersDao.insertOrderBackend");
+            return "資料庫新增失敗!";
+        }
+    }
+
     public int deleteOrder(int no){
         try {
             String sql = "DELETE FROM userorders WHERE OrderNo = ?";

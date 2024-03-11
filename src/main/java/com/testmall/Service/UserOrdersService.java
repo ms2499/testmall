@@ -41,6 +41,10 @@ public class UserOrdersService {
         }
     }
 
+    public String insertOrderBackend(UserOrders userorders){
+        return ordersDao.insertOrderBackend(userorders);
+    }
+
     public String deleteOrder(List<Integer> no){
         int rowsAffected = 0;
         int failCount = 0;
