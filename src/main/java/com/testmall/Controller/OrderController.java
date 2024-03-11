@@ -10,6 +10,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -41,6 +43,14 @@ public class OrderController {
     @Operation(summary = "查詢訂單詳細資料(By 訂單編號)")
     public List<OrderLists> getListByNo(int no){
         return listService.queryListsByNo(no);
+    }
+
+    @GetMapping("getNoByAccount")
+    @ResponseBody
+    @Operation(summary = "查詢訂單編號(By 帳號)")
+    public List<Integer> getNoByAccount(String account){
+        List<Integer> nos = orderService.getNoByAccount(account);
+        return nos;
     }
 
     @PostMapping("/insertOrder")

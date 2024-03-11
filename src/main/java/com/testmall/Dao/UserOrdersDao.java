@@ -60,6 +60,22 @@ public class UserOrdersDao {
         }
     }
 
+    public List<UserOrders> queryNoByAccount(String account){
+        String sql = "SELECT * FROM userorders WHERE OrderAccount = ?";
+
+        try{
+            return jt.query(sql, (rs, n) -> new UserOrders(
+                    rs.getInt("OrderNo"),
+                    rs.getString("OrderAccount"),
+                    rs.getTimestamp("OrderDate"),
+                    rs.getInt("OrderTotal")),
+                    cstool.utf82iso(account));
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("查詢失敗: " + e.getMessage());
+        }
+    }
+
     public Integer insertOrder(Carts carts){
         try {
             // 創建 GeneratedKeyHolder 對象

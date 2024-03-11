@@ -3,6 +3,8 @@ package com.testmall.Service;
 import com.testmall.Dao.UserOrdersDao;
 import com.testmall.Model.Carts;
 import com.testmall.Model.UserOrders;
+
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +22,15 @@ public class UserOrdersService {
 
     public UserOrders queryOrdersByNo(int no){
         return ordersDao.queryOrdersByNo(no);
+    }
+
+    public List<Integer> getNoByAccount(String account){
+        List<UserOrders> userOrders = ordersDao.queryNoByAccount(account);
+        List<Integer> nos = new ArrayList<>();
+        for (UserOrders order : userOrders){
+            nos.add(order.getOrderNo());
+        }
+        return nos;
     }
 
     public String insertOrder(List<Carts> carts){
