@@ -24,6 +24,10 @@ public class CommodityService {
         return comDao.queryByTag(tag);
     }
 
+    public List<Commodities> search(String key) {
+        return comDao.search(key);
+    }
+
     public List<Commodities> queryDiscountCom() {
         return comDao.queryDiscountCom();
     }
