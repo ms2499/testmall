@@ -42,13 +42,6 @@ public class ComController {
         return comService.queryByTag(tag);
     }
 
-    @GetMapping("/search")
-    @ResponseBody
-    @Operation(summary = "模糊查詢商品")
-    public List<Commodities> search(@Parameter(description = "關鍵字") @RequestParam String key){
-        return comService.search(key);
-    }
-
     @GetMapping("getDiscountCom")
     @ResponseBody
     @Operation(summary = "查詢優惠商品")
