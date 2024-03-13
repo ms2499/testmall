@@ -91,6 +91,32 @@ public class CommodityDao {
         }
     }
 
+    public List<Commodities> search(String key){
+        String str = "%" + key + "%";
+        String sql = "SELECT * FROM commodities WHERE CommodityName LIKE ?";
+
+        try{
+            return jt.query(sql, (rs, n) -> new Commodities(rs.getLong("CommodityID"),
+                            rs.getString("CommodityName"),
+                            rs.getInt("CommodityQty"),
+                            rs.getLong("CommodityPrice"),
+                            rs.getString("CommodityTag"),
+                            rs.getString("CommodityImgPath"),
+                            rs.getString("CommodityDetail"),
+                            rs.getByte("CommoditySaleFlag"),
+                            rs.getByte("CommodityDiscount"),
+                            rs.getByte("CommodityDisRate")),
+                    cstool.utf82iso(str));
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "CommodityDao.queryByTag");
+            return null;
+        }
+    }
+
     public List<Commodities> queryDiscountCom(){
         String sql = "SELECT * FROM commodities WHERE CommodityDiscount = 1";
 
