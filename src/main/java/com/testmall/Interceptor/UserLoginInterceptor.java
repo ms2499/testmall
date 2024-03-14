@@ -30,7 +30,22 @@ public class UserLoginInterceptor implements HandlerInterceptor {
             String bearer ="Bearer ";
             if (authorHeader != null && authorHeader.startsWith(bearer)){
                 String token = authorHeader.substring(bearer.length()).replace(" ", "");
-                return userService.verifyUser(token).equals("0000");
+                //return userService.verifyUser(token).equals("0000");
+                switch (userService.verifyUser(token)){
+                    case "0000": return true;
+                    case "0001":
+                    case "0002":
+                    case "9999":
+                    default:
+                        response.setStatus(401);
+                        response.setCharacterEncoding("UTF-8");
+                        response.setContentType("text/html;charset=utf-8");
+                        PrintWriter out = response.getWriter();
+                        out.write("請先登入!");
+                        out.flush();
+                        out.close();
+                        return false;
+                }
             }else {
                 response.setStatus(401);
                 response.setCharacterEncoding("UTF-8");
