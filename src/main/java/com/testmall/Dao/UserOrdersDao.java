@@ -80,7 +80,7 @@ public class UserOrdersDao {
         try {
             // 創建 GeneratedKeyHolder 對象
             GeneratedKeyHolder keyHolder = new GeneratedKeyHolder();
-            String sql = "INSERT INTO userorders (OrderAccount, OrderDate) VALUES(:account, :date);";
+            String sql = "INSERT INTO userorders (OrderAccount, OrderDate) VALUES(:account, :date)";
 
             // 使用 Map 封裝參數，key 就是 SQL 中對應的參數名稱
             Map<String, Object> params = new HashMap<>();
