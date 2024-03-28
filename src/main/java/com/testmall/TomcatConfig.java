@@ -13,7 +13,7 @@ public class TomcatConfig {
     public ServletWebServerFactory servletWebServerFactory() {
         TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
         Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
-        connector.setPort(9090);
+        connector.setPort(9123);
         tomcat.addAdditionalTomcatConnectors(connector);
         return tomcat;
     }
