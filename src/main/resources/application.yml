@@ -11,6 +11,12 @@ server:
     session:
       timeout: 600
   port: 9090
+  ssl:
+    key-store-type: PKCS12
+    key-store: classpath:keystore/baeldung.p12
+    key-store-password: syscom
+    key-alias: baeldung
+    enabled: true
 
 spring:
   datasource:
