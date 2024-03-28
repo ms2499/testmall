@@ -10,7 +10,7 @@ server:
     ## Session 過期時間，默認單位為 s
     session:
       timeout: 600
-  port: 10443
+  port: 9090
   ssl:
     key-store-type: PKCS12
     key-store: classpath:keystore/baeldung.p12
