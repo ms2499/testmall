@@ -56,6 +56,20 @@ public class ComController {
         return comService.queryDiscountCom();
     }
 
+    @GetMapping("getByRow")
+    @ResponseBody
+    @Operation(summary = "依行數查詢")
+    public List<Commodities> getByRow(@Parameter(description = "SQLMX:上次查詢的最後一筆commodityID, 其他SQL:頁數") @RequestParam Long key,
+                                            @Parameter(description = "要查幾行") @RequestParam int rowNum){
+        return comService.queryByRow(key, rowNum);
+    }
+
+    @GetMapping("getRowCount")
+    @ResponseBody
+    @Operation(summary = "查詢商品總筆數")
+    public Long getRowCount(){
+        return comService.queryRowCount();
+    }
 
     @PostMapping("/insertItem")
     @ResponseBody

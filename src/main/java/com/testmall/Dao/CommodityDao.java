@@ -4,6 +4,7 @@ package com.testmall.Dao;
 
 import com.testmall.Model.Commodities;
 import com.testmall.Tools.CharsetTool;
+import com.testmall.properties.CustomProperty;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -137,6 +138,58 @@ public class CommodityDao {
         }
         catch (Exception e){
             cstool.pLogln(e.toString(), "CommodityDao.queryByTag");
+            return null;
+        }
+    }
+
+    public List<Commodities> queryByRow(Long key, int rowNum){
+        String sql;
+        Long startPos = key;
+        if (CustomProperty.osType.equals("OSS"))
+            sql = "SELECT * FROM commodities WHERE CommodityID > ? and rownum <= ?";
+        else{
+            sql = "SELECT * FROM commodities ORDER BY CommodityID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+            startPos = (key - 1) * rowNum;
+        }
+
+        try{
+            return jt.query(sql, (rs, n) -> new Commodities(rs.getLong("CommodityID"),
+                    rs.getString("CommodityName"),
+                    rs.getInt("CommodityQty"),
+                    rs.getLong("CommodityPrice"),
+                    rs.getString("CommodityTag"),
+                    rs.getString("CommodityImgPath"),
+                    rs.getString("CommodityDetail"),
+                    rs.getByte("CommoditySaleFlag"),
+                    rs.getByte("CommodityDiscount"),
+                    rs.getByte("CommodityDisRate")),
+                    startPos, rowNum);
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "CommodityDao.queryByTag");
+            return null;
+        }
+    }
+
+    public Long queryRowCount(){
+        String sql;
+
+        if (CustomProperty.osType.equals("OSS"))
+            sql = "SELECT ROW COUNT FROM commodities";
+        else
+            sql = "SELECT COUNT(*) FROM commodities";
+
+        try{
+            return jt.queryForObject(sql, (rs, n) -> rs.getLong(1));
+        }
+        catch (EmptyResultDataAccessException e){
+            return null;
+        }
+        catch (Exception e){
+            cstool.pLogln(e.toString(), "CommodityDao.queryRowCount");
             return null;
         }
     }

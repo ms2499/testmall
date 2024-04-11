@@ -32,6 +32,14 @@ public class CommodityService {
         return comDao.queryDiscountCom();
     }
 
+    public List<Commodities> queryByRow(Long key, int rowNum) {
+        return comDao.queryByRow(key, rowNum);
+    }
+
+    public Long queryRowCount() {
+        return comDao.queryRowCount();
+    }
+
     public String insertItem(Commodities commodities){
         return comDao.insertItem(commodities);
     }

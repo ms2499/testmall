@@ -51,7 +51,6 @@ springdoc:
     path: /swagger-ui.html
     display-request-duration: true
 
-
 # 自訂參數
 custom:
 #  osType: OSS
